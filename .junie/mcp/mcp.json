@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "C:\\xampp\\php\\php.exe",
+            "args": [
+                "D:\\MY-WORK\\tyro-deshboard-install\\tyro-deshboard-install\\artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

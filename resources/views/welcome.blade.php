@@ -144,6 +144,60 @@
             gap: 14px;
         }
 
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 7px;
+            background: rgba(255, 255, 255, .04);
+            color: #fff;
+        }
+
+        .mobile-nav {
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(4, 12, 24, .98);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+        }
+
+        .mobile-nav.open {
+            display: block;
+        }
+
+        .mobile-nav-inner {
+            display: grid;
+            gap: 8px;
+            padding: 14px 0 18px;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 7px;
+            padding: 0 14px;
+            color: rgba(255, 255, 255, .86);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .mobile-nav a.active {
+            background: rgba(255, 187, 46, .12);
+            color: var(--gold);
+        }
+
+        .mobile-nav a span {
+            font-size: 0;
+        }
+
+        .mobile-nav a span::after {
+            content: "->";
+            font-size: 14px;
+        }
+
         .icon-btn {
             display: grid;
             width: 42px;
@@ -802,6 +856,10 @@
                 display: none;
             }
 
+            .menu-toggle {
+                display: grid;
+            }
+
             .hero,
             .content-grid,
             .toolkit,
@@ -882,6 +940,12 @@
                 grid-template-columns: 92px 1fr;
             }
         }
+
+        @media (max-width: 420px) {
+            .nav-actions .btn-primary {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -922,8 +986,21 @@
                 @else
                     <a class="btn btn-primary" href="{{ route('life-decode.community') }}">Join Community</a>
                 @endif
+                <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation" aria-expanded="false" data-menu-toggle>
+                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
             </div>
         </div>
+        <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-nav>
+            <div class="shell mobile-nav-inner">
+                <a class="active" href="/">Home <span>→</span></a>
+                <a href="{{ route('life-decode.library') }}">Library <span>→</span></a>
+                <a href="{{ route('life-decode.blog') }}">Blog <span>→</span></a>
+                <a href="{{ route('life-decode.tools') }}">Tools <span>→</span></a>
+                <a href="{{ route('life-decode.community') }}">Community <span>→</span></a>
+                <a href="{{ route('life-decode.about') }}">About <span>→</span></a>
+            </div>
+        </nav>
     </header>
 
     <main>
@@ -1146,5 +1223,21 @@
             <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you gain.<br><small>- Life Decode</small></div>
         </div>
     </footer>
+    <script>
+        (() => {
+            const button = document.querySelector('[data-menu-toggle]');
+            const navigation = document.querySelector('[data-mobile-nav]');
+
+            if (!button || !navigation) {
+                return;
+            }
+
+            button.addEventListener('click', () => {
+                const isOpen = navigation.classList.toggle('open');
+                button.setAttribute('aria-expanded', String(isOpen));
+                button.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+            });
+        })();
+    </script>
 </body>
 </html>

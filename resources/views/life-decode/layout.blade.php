@@ -145,6 +145,60 @@
             gap: 14px;
         }
 
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 7px;
+            background: rgba(255, 255, 255, .04);
+            color: #fff;
+        }
+
+        .mobile-nav {
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(4, 12, 24, .98);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+        }
+
+        .mobile-nav.open {
+            display: block;
+        }
+
+        .mobile-nav-inner {
+            display: grid;
+            gap: 8px;
+            padding: 14px 0 18px;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 7px;
+            padding: 0 14px;
+            color: rgba(255, 255, 255, .86);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .mobile-nav a.active {
+            background: rgba(255, 187, 46, .12);
+            color: var(--gold);
+        }
+
+        .mobile-nav a span {
+            font-size: 0;
+        }
+
+        .mobile-nav a span::after {
+            content: "->";
+            font-size: 14px;
+        }
+
         .icon-btn {
             display: grid;
             width: 42px;
@@ -1497,6 +1551,371 @@
             color: #fff;
         }
 
+        .library-hero {
+            background:
+                radial-gradient(circle at 80% 24%, rgba(20, 116, 214, .12), transparent 28%),
+                linear-gradient(135deg, #020815, #061426 54%, #020814);
+        }
+
+        .library-hero-inner {
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            min-height: 275px;
+            align-items: center;
+            gap: 46px;
+            padding: 44px 0;
+        }
+
+        .library-hero h1 {
+            font-size: clamp(42px, 4vw, 58px);
+            line-height: 1.08;
+            font-weight: 900;
+        }
+
+        .library-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            overflow: hidden;
+            min-width: 0;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .035);
+            backdrop-filter: blur(14px);
+        }
+
+        .library-stat {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 14px;
+            align-items: center;
+            min-height: 112px;
+            min-width: 0;
+            padding: 18px;
+            border-right: 1px solid rgba(255, 255, 255, .11);
+        }
+
+        .library-stat:last-child {
+            border-right: 0;
+        }
+
+        .library-stat .round-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, .04);
+            color: #fff;
+        }
+
+        .library-stat b {
+            display: block;
+            color: #fff;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .library-stat span {
+            color: rgba(255, 255, 255, .78);
+            font-size: 13px;
+        }
+
+        .library-controls {
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) repeat(5, minmax(120px, 160px));
+            gap: 22px;
+            align-items: center;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e1e8f0;
+        }
+
+        .library-search {
+            display: grid;
+            grid-template-columns: 1fr 48px;
+            overflow: hidden;
+            min-height: 46px;
+            border: 1px solid #dbe4ee;
+            border-radius: 7px;
+            background: #fff;
+        }
+
+        .library-search input {
+            width: 100%;
+            border: 0;
+            padding: 0 16px;
+            outline: 0;
+        }
+
+        .library-search button {
+            display: grid;
+            place-items: center;
+            border: 0;
+            background: #06111f;
+            color: #fff;
+        }
+
+        .library-layout {
+            display: grid;
+            grid-template-columns: 255px 1fr 300px;
+            gap: 28px;
+            align-items: start;
+            margin-top: 20px;
+        }
+
+        .filter-panel {
+            border: 1px solid #e1e8f0;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, .045);
+        }
+
+        .filter-section {
+            padding: 20px;
+            border-bottom: 1px solid #e1e8f0;
+        }
+
+        .filter-section:last-child {
+            border-bottom: 0;
+        }
+
+        .filter-section h3 {
+            margin-bottom: 14px;
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        .filter-line {
+            display: flex;
+            min-height: 34px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-radius: 6px;
+            padding: 0 10px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .filter-line.active {
+            background: #fff2d5;
+            color: #06111f;
+        }
+
+        .filter-dot {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #9aa6b2;
+            border-radius: 50%;
+        }
+
+        .filter-check {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #9aa6b2;
+            border-radius: 2px;
+        }
+
+        .library-main-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-toggle span {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border: 1px solid #dbe4ee;
+            border-radius: 6px;
+            background: #fff;
+            font-weight: 900;
+        }
+
+        .content-grid-library {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .library-card {
+            overflow: hidden;
+            border: 1px solid #e1e8f0;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, .045);
+        }
+
+        .library-thumb {
+            position: relative;
+            min-height: 150px;
+            background:
+                radial-gradient(circle at 56% 36%, rgba(255, 187, 46, .58), transparent 16%),
+                linear-gradient(135deg, #06111f, #263a58);
+        }
+
+        .library-thumb.hero-thumb {
+            background:
+                linear-gradient(90deg, rgba(6, 17, 31, .12), rgba(6, 17, 31, .36)),
+                url('/images/life-decode-hero.png') center / cover no-repeat;
+        }
+
+        .library-thumb.creator-thumb {
+            background:
+                linear-gradient(90deg, rgba(6, 17, 31, .14), rgba(6, 17, 31, .42)),
+                url('/images/about-creator.png') center / cover no-repeat;
+        }
+
+        .library-thumb.desk-thumb {
+            background:
+                linear-gradient(90deg, rgba(6, 17, 31, .06), rgba(6, 17, 31, .32)),
+                url('/images/about-desk.png') center / cover no-repeat;
+        }
+
+        .library-thumb.mindset-thumb {
+            background:
+                radial-gradient(circle at 70% 34%, rgba(255, 187, 46, .36), transparent 20%),
+                linear-gradient(135deg, #27324a, #9a6f5f 48%, #101827);
+        }
+
+        .library-thumb.philosophy-thumb {
+            background:
+                radial-gradient(circle at 52% 24%, rgba(255, 187, 46, .24), transparent 20%),
+                linear-gradient(135deg, #201b19, #5e5249);
+        }
+
+        .library-thumb.case-thumb {
+            background:
+                radial-gradient(circle at 55% 45%, rgba(255, 187, 46, .58), transparent 16%),
+                linear-gradient(135deg, #1f2937, #4b5563);
+        }
+
+        .library-thumb.diagram-thumb {
+            background:
+                linear-gradient(90deg, rgba(6, 17, 31, .85), rgba(6, 17, 31, .35)),
+                radial-gradient(circle at 72% 40%, rgba(255, 187, 46, .28), transparent 14%),
+                linear-gradient(135deg, #06111f, #0b3658);
+        }
+
+        .duration {
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            border-radius: 5px;
+            padding: 4px 7px;
+            background: rgba(0, 0, 0, .72);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .play-dot {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .68);
+            color: #fff;
+        }
+
+        .library-card-body {
+            padding: 16px;
+        }
+
+        .type-label {
+            display: inline-flex;
+            min-height: 23px;
+            align-items: center;
+            border-radius: 5px;
+            padding: 0 8px;
+            background: #e8f1ff;
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .type-label.article-label {
+            background: #dcfce7;
+            color: #047857;
+        }
+
+        .type-label.resource-label {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .library-card h3 {
+            margin: 10px 0 12px;
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .library-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .library-right {
+            display: grid;
+            gap: 18px;
+        }
+
+        .browse-topic {
+            display: grid;
+            gap: 9px;
+        }
+
+        .topic-mini {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #334155;
+            font-size: 13px;
+        }
+
+        .resource-center {
+            display: grid;
+            grid-template-columns: 1fr 86px;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .resource-sketch {
+            min-height: 90px;
+            border: 1px solid #dbe4ee;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8fbff, #eef4ff);
+        }
+
+        .help-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 28px;
+            border-radius: 8px;
+            padding: 18px;
+            background: #06111f;
+            color: #fff;
+            box-shadow: 0 -16px 40px rgba(15, 23, 42, .16);
+        }
+
         .site-footer {
             margin-top: 0;
             padding: 54px 0;
@@ -1535,6 +1954,10 @@
         @media (max-width: 1050px) {
             .nav-links {
                 display: none;
+            }
+
+            .menu-toggle {
+                display: grid;
             }
 
             .about-hero,
@@ -1581,6 +2004,27 @@
 
             .featured-post {
                 grid-template-columns: 1fr;
+            }
+
+            .library-hero-inner,
+            .library-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .library-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .library-search {
+                grid-column: 1 / -1;
+            }
+
+            .content-grid-library {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .library-stats {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .footer-grid {
@@ -1633,6 +2077,9 @@
             .tools-points,
             .toolkit-grid,
             .how-strip,
+            .library-stats,
+            .library-controls,
+            .content-grid-library,
             .footer-grid {
                 grid-template-columns: 1fr;
             }
@@ -1666,6 +2113,37 @@
             .article-thumb,
             .post-image {
                 min-height: 190px;
+            }
+
+            .library-stat {
+                border-right: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, .11);
+            }
+
+            .library-stat:last-child {
+                border-bottom: 0;
+            }
+
+            .library-controls {
+                gap: 12px;
+            }
+
+            .library-layout {
+                gap: 20px;
+            }
+
+            .filter-panel {
+                order: 2;
+            }
+
+            .library-right {
+                order: 3;
+            }
+
+            .help-strip {
+                align-items: flex-start;
+                flex-direction: column;
+                position: static;
             }
 
             .community-hero {
@@ -1743,6 +2221,12 @@
                 height: 280px;
             }
         }
+
+        @media (max-width: 420px) {
+            .nav-actions .btn-primary {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1772,8 +2256,21 @@
                 <a class="btn btn-primary" href="{{ route('life-decode.tools') }}">The Mental Toolkit
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
+                <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation" aria-expanded="false" data-menu-toggle>
+                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
             </div>
         </div>
+        <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-nav>
+            <div class="shell mobile-nav-inner">
+                <a class="{{ request()->is('/') ? 'active' : '' }}" href="/">Home <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.library') ? 'active' : '' }}" href="{{ route('life-decode.library') }}">Library <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.blog') ? 'active' : '' }}" href="{{ route('life-decode.blog') }}">Blog <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.tools') ? 'active' : '' }}" href="{{ route('life-decode.tools') }}">Tools <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.community') ? 'active' : '' }}" href="{{ route('life-decode.community') }}">Community <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.about') ? 'active' : '' }}" href="{{ route('life-decode.about') }}">About <span>→</span></a>
+            </div>
+        </nav>
     </header>
 
     @yield('content')
@@ -1810,5 +2307,21 @@
             <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you gain.<br><small>- Life Decode</small></div>
         </div>
     </footer>
+    <script>
+        (() => {
+            const button = document.querySelector('[data-menu-toggle]');
+            const navigation = document.querySelector('[data-mobile-nav]');
+
+            if (!button || !navigation) {
+                return;
+            }
+
+            button.addEventListener('click', () => {
+                const isOpen = navigation.classList.toggle('open');
+                button.setAttribute('aria-expanded', String(isOpen));
+                button.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+            });
+        })();
+    </script>
 </body>
 </html>

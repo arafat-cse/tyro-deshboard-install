@@ -327,6 +327,157 @@
             box-shadow: 0 32px 80px rgba(0, 0, 0, .38);
         }
 
+        .hero-video-slider {
+            position: relative;
+            min-height: 470px;
+        }
+
+        .video-slide {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            align-content: center;
+            padding: 42px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s ease;
+        }
+
+        .video-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .video-slide-bg,
+        .video-slide video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-slide-bg {
+            background-position: center;
+            background-size: cover;
+        }
+
+        .video-slide::after {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(5, 12, 23, .86), rgba(5, 12, 23, .28) 55%, rgba(255, 187, 46, .12));
+            content: "";
+        }
+
+        .video-slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 360px;
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 58px;
+            border-radius: 8px;
+            padding: 9px 13px;
+            background: rgba(2, 8, 21, .74);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-badge::before {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gold);
+            content: "";
+        }
+
+        .video-slide h2 {
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 900;
+            line-height: 1.14;
+        }
+
+        .video-slide p {
+            margin-top: 14px;
+            color: rgba(255, 255, 255, .82);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .video-play {
+            position: absolute;
+            z-index: 3;
+            top: 50%;
+            left: 58%;
+            display: grid;
+            width: 88px;
+            height: 88px;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .54);
+            color: #fff;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .video-duration {
+            position: absolute;
+            z-index: 3;
+            left: 24px;
+            bottom: 24px;
+            border-radius: 6px;
+            padding: 7px 9px;
+            background: rgba(0, 0, 0, .68);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .slider-controls {
+            position: absolute;
+            z-index: 4;
+            right: 0;
+            bottom: -44px;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .slider-arrow {
+            border: 0;
+            background: transparent;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 9px;
+        }
+
+        .slider-dot {
+            width: 32px;
+            height: 6px;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .34);
+            cursor: pointer;
+        }
+
+        .slider-dot.active {
+            background: var(--gold);
+        }
+
         .hero-visual img {
             position: absolute;
             inset: 0;
@@ -340,6 +491,10 @@
             inset: 0;
             background: linear-gradient(90deg, rgba(5, 12, 23, .78), rgba(5, 12, 23, .16) 55%, rgba(255, 187, 46, .1));
             content: "";
+        }
+
+        .hero-visual.has-slider::after {
+            display: none;
         }
 
         .topic-orbit {
@@ -913,6 +1068,25 @@
                 min-height: 360px;
             }
 
+            .hero-video-slider,
+            .video-slide {
+                min-height: 360px;
+            }
+
+            .video-slide {
+                padding: 24px;
+            }
+
+            .video-badge {
+                margin-bottom: 42px;
+            }
+
+            .video-play {
+                width: 64px;
+                height: 64px;
+                left: 70%;
+            }
+
             .quick-points,
             .topics,
             .features-row,
@@ -1004,18 +1178,36 @@
     </header>
 
     <main>
+        @php
+            $hero = $homePage ?? null;
+            $slides = ($videoSlides ?? collect())->isNotEmpty()
+                ? $videoSlides
+                : collect([
+                    (object) [
+                        'badge' => 'Latest Video',
+                        'title' => 'Why Your Mind Tricks You',
+                        'highlight' => 'Every Day',
+                        'description' => 'Understanding Cognitive Biases That Control Your Decisions.',
+                        'duration' => '18:45',
+                        'poster_path' => null,
+                        'poster_url' => asset('images/life-decode-hero.png'),
+                        'video_path' => null,
+                        'video_url' => null,
+                    ],
+                ]);
+        @endphp
         <section class="hero-wrap">
             <div class="shell hero">
                 <div>
-                    <p class="eyebrow">Understand the hidden patterns</p>
-                    <h1>Understand the patterns. <span class="gold">Upgrade</span> your life.</h1>
-                    <p class="hero-copy">Life Decode helps you understand the psychology behind your thoughts, decisions, and behavior so you can make better choices and live with clarity and purpose.</p>
+                    <p class="eyebrow">{{ $hero?->eyebrow ?? 'Understand the hidden patterns' }}</p>
+                    <h1>{{ $hero?->title_line_one ?? 'Decode Life.' }} <span class="gold">{{ $hero?->title_line_two ?? 'Live Amplified.' }}</span></h1>
+                    <p class="hero-copy">{{ $hero?->description ?? 'Explore the psychology, systems and thinking models that shape your behavior, decisions and reality.' }}</p>
 
                     <div class="hero-cta">
-                        <a class="btn btn-primary" href="{{ route('life-decode.library') }}">Explore Library
+                        <a class="btn btn-primary" href="{{ $hero?->primary_button_url ?? route('life-decode.library') }}">{{ $hero?->primary_button_text ?? 'Explore Library' }}
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
-                        <a class="btn btn-dark" href="{{ route('life-decode.tools') }}">Start With Free Toolkit
+                        <a class="btn btn-dark" href="{{ $hero?->secondary_button_url ?? route('life-decode.tools') }}">{{ $hero?->secondary_button_text ?? 'Start With Free Toolkit' }}
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
@@ -1028,21 +1220,55 @@
                     </div>
                 </div>
 
-                <div class="hero-visual" aria-label="Mind maze artwork">
-                    <img src="/images/life-decode-hero.png" alt="Person facing a glowing brain maze">
-                    <div class="topic-orbit orbit-left">
-                        <span><span class="tiny-icon">P</span>Psychology</span>
-                        <span><span class="tiny-icon">M</span>Mindset</span>
-                        <span><span class="tiny-icon">D</span>Decisions</span>
-                    </div>
-                    <div class="topic-orbit">
-                        <span><span class="tiny-icon">B</span>Behavior</span>
-                        <span><span class="tiny-icon">H</span>Habits</span>
-                        <span><span class="tiny-icon">S</span>Life Systems</span>
-                    </div>
-                    <div class="play-badge">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                        Latest Video
+                <div class="hero-visual has-slider" aria-label="Featured video slider">
+                    <div class="hero-video-slider" data-video-slider>
+                        @foreach ($slides as $slide)
+                            @php
+                                $posterUrl = $slide->poster_path
+                                    ? Storage::url($slide->poster_path)
+                                    : ($slide->poster_url ?? asset('images/life-decode-hero.png'));
+                                $videoUrl = $slide->video_path
+                                    ? Storage::url($slide->video_path)
+                                    : $slide->video_url;
+                            @endphp
+                            <article class="video-slide {{ $loop->first ? 'active' : '' }}" data-video-slide>
+                                @if ($videoUrl && $slide->video_path)
+                                    <video muted loop playsinline preload="metadata" poster="{{ $posterUrl }}">
+                                        <source src="{{ $videoUrl }}">
+                                    </video>
+                                @else
+                                    <div class="video-slide-bg" style="background-image: url('{{ $posterUrl }}');"></div>
+                                @endif
+                                <div class="video-slide-content">
+                                    <span class="video-badge">{{ $slide->badge }}</span>
+                                    <h2>{{ $slide->title }} @if($slide->highlight)<span class="gold">{{ $slide->highlight }}</span>@endif</h2>
+                                    @if ($slide->description)
+                                        <p>{{ $slide->description }}</p>
+                                    @endif
+                                </div>
+                                @if ($videoUrl)
+                                    <a class="video-play" href="{{ $videoUrl }}" target="_blank" rel="noopener" aria-label="Play video">
+                                        <svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </a>
+                                @else
+                                    <span class="video-play" aria-hidden="true">
+                                        <svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </span>
+                                @endif
+                                @if ($slide->duration)
+                                    <span class="video-duration">{{ $slide->duration }}</span>
+                                @endif
+                            </article>
+                        @endforeach
+                        <div class="slider-controls">
+                            <button class="slider-arrow" type="button" data-slider-prev aria-label="Previous video">←</button>
+                            <div class="slider-dots">
+                                @foreach ($slides as $slide)
+                                    <button class="slider-dot {{ $loop->first ? 'active' : '' }}" type="button" data-slider-dot="{{ $loop->index }}" aria-label="Show video {{ $loop->iteration }}"></button>
+                                @endforeach
+                            </div>
+                            <button class="slider-arrow" type="button" data-slider-next aria-label="Next video">→</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1237,6 +1463,52 @@
                 button.setAttribute('aria-expanded', String(isOpen));
                 button.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
             });
+        })();
+
+        (() => {
+            const slider = document.querySelector('[data-video-slider]');
+
+            if (!slider) {
+                return;
+            }
+
+            const slides = Array.from(slider.querySelectorAll('[data-video-slide]'));
+            const dots = Array.from(slider.querySelectorAll('[data-slider-dot]'));
+            const previous = slider.querySelector('[data-slider-prev]');
+            const next = slider.querySelector('[data-slider-next]');
+            let activeIndex = 0;
+
+            const showSlide = (index) => {
+                activeIndex = (index + slides.length) % slides.length;
+
+                slides.forEach((slide, slideIndex) => {
+                    const isActive = slideIndex === activeIndex;
+                    slide.classList.toggle('active', isActive);
+                    const video = slide.querySelector('video');
+
+                    if (video) {
+                        if (isActive) {
+                            video.play().catch(() => {});
+                        } else {
+                            video.pause();
+                        }
+                    }
+                });
+
+                dots.forEach((dot, dotIndex) => {
+                    dot.classList.toggle('active', dotIndex === activeIndex);
+                });
+            };
+
+            previous?.addEventListener('click', () => showSlide(activeIndex - 1));
+            next?.addEventListener('click', () => showSlide(activeIndex + 1));
+            dots.forEach((dot) => dot.addEventListener('click', () => showSlide(Number(dot.dataset.sliderDot))));
+
+            if (slides.length > 1) {
+                window.setInterval(() => showSlide(activeIndex + 1), 7000);
+            }
+
+            showSlide(0);
         })();
     </script>
 </body>

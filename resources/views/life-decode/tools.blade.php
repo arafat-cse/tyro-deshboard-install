@@ -61,13 +61,13 @@
                         <article class="resource-card category-soft">
                             <span class="icon-tile {{ $class }}">{{ $icon }}</span>
                             <h3>{{ $title }}</h3>
-                            <p><strong style="color:#334155;">{{ $count }}</strong></p>
+                            <p><strong class="cat-count">{{ $count }}</strong></p>
                             <p>{{ $copy }}</p>
                         </article>
                     @endforeach
                 </div>
                 <div style="margin-top:20px;text-align:center;">
-                    <a class="btn btn-dark" style="background:#fff;color:#06111f;border-color:#dbe4ee;" href="#">View All Categories
+                    <a class="btn btn-dark tools-view-all-btn" href="#">View All Categories
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
                 </div>

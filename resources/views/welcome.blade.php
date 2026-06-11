@@ -332,12 +332,28 @@
             min-height: 470px;
         }
 
+        .hero-visual.has-slider {
+            overflow: visible;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .hero-visual.has-slider .hero-video-slider {
+            border: 1px solid rgba(255, 255, 255, .22);
+            border-radius: 14px;
+            background: #06101d;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, .38);
+        }
+
         .video-slide {
             position: absolute;
             inset: 0;
             display: grid;
-            align-content: center;
+            align-content: start;
             padding: 42px;
+            overflow: hidden;
+            border-radius: inherit;
             opacity: 0;
             pointer-events: none;
             transition: opacity .35s ease;
@@ -379,7 +395,7 @@
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            margin-bottom: 58px;
+            margin-bottom: 74px;
             border-radius: 8px;
             padding: 9px 13px;
             background: rgba(2, 8, 21, .74);
@@ -453,15 +469,25 @@
         }
 
         .slider-arrow {
+            display: grid;
+            width: 28px;
+            height: 28px;
+            place-items: center;
             border: 0;
             background: transparent;
-            color: #fff;
-            font-size: 24px;
+            color: rgba(255, 255, 255, .8);
             cursor: pointer;
+            transition: color .2s ease, transform .2s ease;
+        }
+
+        .slider-arrow:hover {
+            color: #fff;
+            transform: translateY(-1px);
         }
 
         .slider-dots {
             display: flex;
+            align-items: center;
             gap: 9px;
         }
 
@@ -1078,7 +1104,7 @@
             }
 
             .video-badge {
-                margin-bottom: 42px;
+                margin-bottom: 60px;
             }
 
             .video-play {

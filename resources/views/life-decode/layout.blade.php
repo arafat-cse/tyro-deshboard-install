@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=The+Nautigal:wght@700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=The+Nautigal:wght@700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -143,6 +146,45 @@
             display: flex;
             align-items: center;
             gap: 14px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 34px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 999px;
+            padding: 0 10px;
+            background: rgba(255, 255, 255, .04);
+            color: rgba(255, 255, 255, .5);
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: rgba(255, 255, 255, .3);
+            color: rgba(255, 255, 255, .8);
+        }
+
+        .theme-toggle svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2.2;
+        }
+
+        .theme-toggle .toggle-sun.active {
+            color: var(--gold);
+        }
+
+        .theme-toggle .toggle-moon.active {
+            color: #93c5fd;
+        }
+
+        .toggle-divider {
+            width: 1px;
+            height: 12px;
+            background: rgba(255, 255, 255, .15);
         }
 
         .menu-toggle {
@@ -1400,10 +1442,16 @@
 
         .article-row {
             display: grid;
-            grid-template-columns: 220px 1fr 24px;
-            gap: 22px;
-            padding: 18px;
+            grid-template-columns: 160px 1fr 20px;
+            gap: 18px;
+            padding: 16px 18px;
             border-bottom: 1px solid #e1e8f0;
+            align-items: start;
+            transition: background 0.2s ease;
+        }
+
+        .article-row:hover {
+            background: #fafbfc;
         }
 
         .article-row:last-child {
@@ -1411,8 +1459,8 @@
         }
 
         .article-thumb {
-            min-height: 126px;
-            border-radius: 8px;
+            min-height: 110px;
+            border-radius: 7px;
             background:
                 radial-gradient(circle at 55% 32%, rgba(255, 187, 46, .55), transparent 18%),
                 linear-gradient(135deg, #06111f, #233652);
@@ -1455,10 +1503,10 @@
         }
 
         .article-row h3 {
-            margin: 8px 0;
-            font-size: 20px;
+            margin: 6px 0 8px;
+            font-size: 16px;
             font-weight: 900;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .article-row p,
@@ -1584,14 +1632,22 @@
         }
 
         .library-stat {
-            display: grid;
-            grid-template-columns: 56px 1fr;
-            gap: 14px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 112px;
             min-width: 0;
-            padding: 18px;
+            padding: 14px 10px;
             border-right: 1px solid rgba(255, 255, 255, .11);
+            text-align: center;
+        }
+
+        .library-stat-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
         }
 
         .library-stat:last-child {
@@ -1599,22 +1655,33 @@
         }
 
         .library-stat .round-icon {
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
             background: rgba(255, 255, 255, .04);
             color: #fff;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
         }
 
         .library-stat b {
             display: block;
             color: #fff;
-            font-size: 24px;
-            line-height: 1;
+            font-size: 20px;
+            line-height: 1.1;
+            font-weight: 800;
         }
 
-        .library-stat span {
-            color: rgba(255, 255, 255, .78);
+        .library-stat .stat-label {
+            color: #fff;
             font-size: 13px;
+            font-weight: 700;
+        }
+
+        .library-stat-desc {
+            color: rgba(255, 255, 255, .6);
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         .library-controls {
@@ -1755,7 +1822,8 @@
 
         .library-thumb {
             position: relative;
-            min-height: 150px;
+            aspect-ratio: 16/10;
+            width: 100%;
             background:
                 radial-gradient(circle at 56% 36%, rgba(255, 187, 46, .58), transparent 16%),
                 linear-gradient(135deg, #06111f, #263a58);
@@ -1806,23 +1874,23 @@
 
         .duration {
             position: absolute;
-            left: 12px;
-            bottom: 12px;
-            border-radius: 5px;
-            padding: 4px 7px;
+            left: 8px;
+            bottom: 8px;
+            border-radius: 4px;
+            padding: 2px 6px;
             background: rgba(0, 0, 0, .72);
             color: #fff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
         }
 
         .play-dot {
             position: absolute;
-            right: 12px;
-            bottom: 12px;
+            right: 8px;
+            bottom: 8px;
             display: grid;
-            width: 34px;
-            height: 34px;
+            width: 28px;
+            height: 28px;
             place-items: center;
             border-radius: 50%;
             background: rgba(0, 0, 0, .68);
@@ -1830,18 +1898,18 @@
         }
 
         .library-card-body {
-            padding: 16px;
+            padding: 12px;
         }
 
         .type-label {
             display: inline-flex;
-            min-height: 23px;
+            min-height: 20px;
             align-items: center;
             border-radius: 5px;
-            padding: 0 8px;
+            padding: 0 6px;
             background: #e8f1ff;
             color: var(--blue);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
         }
@@ -1857,10 +1925,21 @@
         }
 
         .library-card h3 {
-            margin: 10px 0 12px;
-            font-size: 18px;
-            font-weight: 900;
-            line-height: 1.2;
+            margin: 8px 0 10px;
+            font-size: 14.5px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .library-card .mini-tags {
+            margin-top: 10px;
+            gap: 6px;
+        }
+
+        .library-card .mini-tags span {
+            font-size: 10px;
+            min-height: 20px;
+            padding: 0 6px;
         }
 
         .library-meta {
@@ -1868,7 +1947,7 @@
             flex-wrap: wrap;
             gap: 10px;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .library-right {
@@ -2222,18 +2301,371 @@
             }
         }
 
-        @media (max-width: 420px) {
-            .nav-actions .btn-primary {
-                display: none;
-            }
+        /* Dark Mode Transitions & Variables */
+        body {
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            --paper: #08111d;
+            background: var(--paper);
+            color: #f3f4f6;
+        }
+
+        body.dark-mode .library-card {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
+        }
+
+        body.dark-mode .library-card h3 {
+            color: #fff;
+        }
+
+        body.dark-mode .library-meta {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .mini-tags span {
+            background: rgba(255, 255, 255, .08);
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .filter-panel {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .2);
+        }
+
+        body.dark-mode .filter-section {
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        body.dark-mode .filter-line {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .filter-line.active {
+            background: rgba(255, 187, 46, .15);
+            color: var(--gold);
+        }
+
+        body.dark-mode .filter-dot {
+            border-color: rgba(255, 255, 255, .3);
+        }
+
+        body.dark-mode .filter-check {
+            border-color: rgba(255, 255, 255, .3);
+        }
+
+        body.dark-mode .side-card {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .2);
+        }
+
+        body.dark-mode .topic-mini {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .count-pill {
+            background: rgba(255, 255, 255, .08);
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .library-main-head {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .select-pill {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+        }
+
+        body.dark-mode .library-search {
+            border-color: rgba(255, 255, 255, .1);
+            background: #0d1b2a;
+        }
+
+        body.dark-mode .library-search input {
+            background: transparent;
+            color: #fff;
+        }
+
+        body.dark-mode .view-toggle span {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        body.dark-mode .resource-sketch {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        body.dark-mode .resource-sketch rect {
+            fill: #1e293b;
+            stroke: #475569;
+        }
+
+        body.dark-mode .side-card input {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        body.dark-mode .filter-check.checked {
+            background: var(--gold);
+            border-color: var(--gold);
+            box-shadow: inset 0 0 0 2px #0d1b2a;
+        }
+
+        .filter-check.checked {
+            background: var(--gold);
+            border-color: var(--gold);
+            box-shadow: inset 0 0 0 2px #fff;
+        }
+
+        /* View Toggle active styles */
+        .view-toggle span.active {
+            background: #06111f;
+            color: #fff;
+            border-color: #06111f;
+        }
+
+        body.dark-mode .view-toggle span.active {
+            background: var(--gold);
+            color: #08111d;
+            border-color: var(--gold);
+        }
+
+        /* List View Styles */
+        .content-grid-library.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .content-grid-library.list-view .library-card {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            align-items: center;
+        }
+
+        .content-grid-library.list-view .library-thumb {
+            aspect-ratio: auto;
+            height: 100%;
+            min-height: 140px;
+        }
+
+        /* Blog Dark Mode & Visual Adjustments */
+        body.dark-mode .featured-post {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
+        }
+
+        body.dark-mode .featured-post h2 {
+            color: #fff;
+        }
+
+        body.dark-mode .article-listing {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .2);
+        }
+
+        body.dark-mode .article-row {
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        body.dark-mode .article-row h3 {
+            color: #fff;
+        }
+
+        body.dark-mode .article-row p {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .section-title {
+            color: #fff;
+        }
+
+        body.dark-mode .blog-tabs {
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        body.dark-mode .blog-tabs a {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .blog-tabs a.active {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        body.dark-mode .page-pill {
+            background: #0d1b2a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #f3f4f6;
+        }
+
+        body.dark-mode .page-pill.active {
+            background: var(--gold);
+            color: #08111d;
+            border-color: var(--gold);
+        }
+
+        body.dark-mode .page-pill.disabled {
+            opacity: 0.4;
+        }
+
+        .page-pill.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Sidebar Topic Hover & Micro-interactions */
+        .topic-line {
+            transition: all 0.2s ease;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin: 0 -8px;
+        }
+
+        .topic-line:hover {
+            background: rgba(255, 187, 46, 0.08);
+            color: #06111f !important;
+        }
+
+        body.dark-mode .topic-line:hover {
+            background: rgba(255, 187, 46, 0.15);
+            color: var(--gold) !important;
+        }
+
+        /* Bookmark Micro-interactions */
+        .bookmark-btn {
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .bookmark-btn:hover {
+            transform: scale(1.15);
+            color: #d97706 !important;
+        }
+
+        .bookmark-btn.bookmarked {
+            color: #d97706 !important;
+            fill: #d97706;
+        }
+
+        /* Popular mini thumbs */
+        .mini-thumb.halo-img {
+            background: url('/images/about-creator.png') center / cover no-repeat;
+        }
+
+        .mini-thumb.ras-img {
+            background: url('/images/life-decode-hero.png') center / cover no-repeat;
+        }
+
+        .mini-thumb.overthink-img {
+            background: url('/images/about-desk.png') center / cover no-repeat;
+        }
+
+        /* ---- Additional Blog Dark Mode Rules ---- */
+        body.dark-mode .article-row:hover {
+            background: rgba(255, 255, 255, .04);
+        }
+
+        body.dark-mode .article-row small {
+            color: #6b7280;
+        }
+
+        body.dark-mode .article-row .overline {
+            opacity: 0.9;
+        }
+
+        body.dark-mode .blog-search-form {
+            background: rgba(255, 255, 255, .04);
+        }
+
+        body.dark-mode .section {
+            background: transparent;
+        }
+
+        body.dark-mode .featured-section .section-title {
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .side-card h3 {
+            color: #fff;
+        }
+
+        body.dark-mode .side-card .copy {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .side-card input {
+            background: #111f30;
+            border-color: rgba(255, 255, 255, .12);
+            color: #f3f4f6;
+        }
+
+        body.dark-mode .side-card input::placeholder {
+            color: #6b7280;
+        }
+
+        body.dark-mode .btn-dark {
+            border-color: rgba(255, 255, 255, .18);
+            background: rgba(255, 255, 255, .06);
+        }
+
+        body.dark-mode .link-blue {
+            color: #60a5fa;
+        }
+
+        body.dark-mode .featured-post .copy {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .overline {
+            opacity: 0.85;
+        }
+
+        /* Theme toggle active states */
+        .toggle-sun {
+            color: rgba(255, 255, 255, .4);
+        }
+
+        .toggle-moon {
+            color: rgba(255, 255, 255, .4);
+        }
+
+        .toggle-sun.active {
+            color: var(--gold);
+        }
+
+        .toggle-moon.active {
+            color: #93c5fd;
         }
     </style>
 </head>
+
 <body>
     <header class="site-header">
         <div class="shell nav">
             <a class="brand" href="/">
-                <span class="brand-mark" aria-hidden="true">LD</span>
+                <span class="brand-mark" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9 4a4 4 0 0 0-4 4v1a4 4 0 0 0 0 6v1a4 4 0 0 0 4 4m6-16a4 4 0 0 1 4 4v1a4 4 0 0 1 0 6v1a4 4 0 0 1-4 4M9 4v16m6-16v16M7 9h4m2 0h4M7 15h4m2 0h4"
+                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
                 <span>
                     <strong>LIFE <span>DECODE</span></strong>
                     <small>Decode life. Live amplified.</small>
@@ -2242,33 +2674,66 @@
 
             <nav class="nav-links" aria-label="Primary navigation">
                 <a class="{{ request()->is('/') ? 'active' : '' }}" href="/">Home</a>
-                <a class="{{ request()->routeIs('life-decode.library') ? 'active' : '' }}" href="{{ route('life-decode.library') }}">Library</a>
-                <a class="{{ request()->routeIs('life-decode.blog') ? 'active' : '' }}" href="{{ route('life-decode.blog') }}">Blog</a>
-                <a class="{{ request()->routeIs('life-decode.tools') ? 'active' : '' }}" href="{{ route('life-decode.tools') }}">Tools</a>
-                <a class="{{ request()->routeIs('life-decode.community') ? 'active' : '' }}" href="{{ route('life-decode.community') }}">Community</a>
-                <a class="{{ request()->routeIs('life-decode.about') ? 'active' : '' }}" href="{{ route('life-decode.about') }}">About</a>
+                <a class="{{ request()->routeIs('life-decode.library') ? 'active' : '' }}"
+                    href="{{ route('life-decode.library') }}">Library</a>
+                <a class="{{ request()->routeIs('life-decode.blog') ? 'active' : '' }}"
+                    href="{{ route('life-decode.blog') }}">Blog</a>
+                <a class="{{ request()->routeIs('life-decode.tools') ? 'active' : '' }}"
+                    href="{{ route('life-decode.tools') }}">Tools</a>
+                <a class="{{ request()->routeIs('life-decode.community') ? 'active' : '' }}"
+                    href="{{ route('life-decode.community') }}">Community</a>
+                <a class="{{ request()->routeIs('life-decode.about') ? 'active' : '' }}"
+                    href="{{ route('life-decode.about') }}">About</a>
             </nav>
 
             <div class="nav-actions">
                 <button class="icon-btn" type="button" aria-label="Search">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+                <button class="theme-toggle" type="button" aria-label="Toggle theme">
+                    <span class="toggle-sun active"><svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" fill="currentColor" />
+                            <path
+                                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                                stroke="currentColor" stroke-linecap="round" />
+                        </svg></span>
+                    <span class="toggle-divider"></span>
+                    <span class="toggle-moon"><svg viewBox="0 0 24 24" fill="none">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor"
+                                fill="none" />
+                        </svg></span>
                 </button>
                 <a class="btn btn-primary" href="{{ route('life-decode.tools') }}">The Mental Toolkit
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                 </a>
-                <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation" aria-expanded="false" data-menu-toggle>
-                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation"
+                    aria-expanded="false" data-menu-toggle>
+                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
                 </button>
             </div>
         </div>
         <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-nav>
             <div class="shell mobile-nav-inner">
                 <a class="{{ request()->is('/') ? 'active' : '' }}" href="/">Home <span>→</span></a>
-                <a class="{{ request()->routeIs('life-decode.library') ? 'active' : '' }}" href="{{ route('life-decode.library') }}">Library <span>→</span></a>
-                <a class="{{ request()->routeIs('life-decode.blog') ? 'active' : '' }}" href="{{ route('life-decode.blog') }}">Blog <span>→</span></a>
-                <a class="{{ request()->routeIs('life-decode.tools') ? 'active' : '' }}" href="{{ route('life-decode.tools') }}">Tools <span>→</span></a>
-                <a class="{{ request()->routeIs('life-decode.community') ? 'active' : '' }}" href="{{ route('life-decode.community') }}">Community <span>→</span></a>
-                <a class="{{ request()->routeIs('life-decode.about') ? 'active' : '' }}" href="{{ route('life-decode.about') }}">About <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.library') ? 'active' : '' }}"
+                    href="{{ route('life-decode.library') }}">Library <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.blog') ? 'active' : '' }}"
+                    href="{{ route('life-decode.blog') }}">Blog <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.tools') ? 'active' : '' }}"
+                    href="{{ route('life-decode.tools') }}">Tools <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.community') ? 'active' : '' }}"
+                    href="{{ route('life-decode.community') }}">Community <span>→</span></a>
+                <a class="{{ request()->routeIs('life-decode.about') ? 'active' : '' }}"
+                    href="{{ route('life-decode.about') }}">About <span>→</span></a>
             </div>
         </nav>
     </header>
@@ -2292,36 +2757,85 @@
         <div class="shell footer-grid">
             <div>
                 <a class="brand" href="/">
-                    <span class="brand-mark" aria-hidden="true">LD</span>
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9 4a4 4 0 0 0-4 4v1a4 4 0 0 0 0 6v1a4 4 0 0 0 4 4m6-16a4 4 0 0 1 4 4v1a4 4 0 0 1 0 6v1a4 4 0 0 1-4 4M9 4v16m6-16v16M7 9h4m2 0h4M7 15h4m2 0h4"
+                                stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
                     <span>
                         <strong>LIFE <span>DECODE</span></strong>
                         <small>Decode life. Live amplified.</small>
                     </span>
                 </a>
-                <p style="margin-top:18px;">A knowledge hub for understanding psychology, behavior, and life systems to help you think clearly and live intentionally.</p>
+                <p style="margin-top:18px;">A knowledge hub for understanding psychology, behavior, and life systems to
+                    help you think clearly and live intentionally.</p>
             </div>
-            <div><h4>Explore</h4><a href="/">Home</a><a href="{{ route('life-decode.library') }}">Library</a><a href="{{ route('life-decode.blog') }}">Blog</a><a href="{{ route('life-decode.tools') }}">Tools</a></div>
-            <div><h4>Community</h4><a href="{{ route('life-decode.community') }}">Community</a><a href="#">Discussions</a><a href="#">Study Groups</a><a href="#">Events</a></div>
-            <div><h4>Resources</h4><a href="#">Downloads</a><a href="#">Templates</a><a href="#">Cheatsheets</a><a href="#">Frameworks</a></div>
-            <div><h4>Company</h4><a href="{{ route('life-decode.about') }}">About</a><a href="#">Contact</a><a href="#">Work With Me</a></div>
-            <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you gain.<br><small>- Life Decode</small></div>
+            <div>
+                <h4>Explore</h4><a href="/">Home</a><a href="{{ route('life-decode.library') }}">Library</a><a
+                    href="{{ route('life-decode.blog') }}">Blog</a><a href="{{ route('life-decode.tools') }}">Tools</a>
+            </div>
+            <div>
+                <h4>Community</h4><a href="{{ route('life-decode.community') }}">Community</a><a
+                    href="#">Discussions</a><a href="#">Study Groups</a><a href="#">Events</a>
+            </div>
+            <div>
+                <h4>Resources</h4><a href="#">Downloads</a><a href="#">Templates</a><a href="#">Cheatsheets</a><a
+                    href="#">Frameworks</a>
+            </div>
+            <div>
+                <h4>Company</h4><a href="{{ route('life-decode.about') }}">About</a><a href="#">Contact</a><a
+                    href="#">Work With Me</a>
+            </div>
+            <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you
+                gain.<br><small>- Life Decode</small></div>
         </div>
     </footer>
     <script>
         (() => {
-            const button = document.querySelector('[data-menu-toggle]');
-            const navigation = document.querySelector('[data-mobile-nav]');
-
-            if (!button || !navigation) {
-                return;
+            /* ---- Mobile menu ---- */
+            const menuBtn = document.querySelector('[data-menu-toggle]');
+            const mobileNav = document.querySelector('[data-mobile-nav]');
+            if (menuBtn && mobileNav) {
+                menuBtn.addEventListener('click', () => {
+                    const isOpen = mobileNav.classList.toggle('open');
+                    menuBtn.setAttribute('aria-expanded', String(isOpen));
+                    menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+                });
             }
 
-            button.addEventListener('click', () => {
-                const isOpen = navigation.classList.toggle('open');
-                button.setAttribute('aria-expanded', String(isOpen));
-                button.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-            });
+            /* ---- Theme Toggle (Dark / Light) ---- */
+            const themeToggleBtn = document.querySelector('.theme-toggle');
+            const sunIcon = document.querySelector('.toggle-sun');
+            const moonIcon = document.querySelector('.toggle-moon');
+
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    document.body.classList.add('dark-mode');
+                    if (sunIcon) sunIcon.classList.remove('active');
+                    if (moonIcon) moonIcon.classList.add('active');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    if (sunIcon) sunIcon.classList.add('active');
+                    if (moonIcon) moonIcon.classList.remove('active');
+                }
+            };
+
+            // Restore saved theme on every page load
+            const savedTheme = localStorage.getItem('ld-theme');
+            applyTheme(savedTheme === 'dark');
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const nowDark = !document.body.classList.contains('dark-mode');
+                    localStorage.setItem('ld-theme', nowDark ? 'dark' : 'light');
+                    applyTheme(nowDark);
+                });
+            }
         })();
     </script>
 </body>
+
 </html>

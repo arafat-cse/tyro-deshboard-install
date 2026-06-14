@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\BlogCategory;
+use App\Models\BlogPost;
+use App\Models\LibraryItem;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -219,21 +223,279 @@ return [
     //     // ],
     // ],
     'resources' => [
-        // 'posts' => [
-        //     'model' => 'App\Models\Post',
-        //     'title' => 'Posts',
-        //     'fields' => [
-        //         'title' => ['type' => 'text', 'label' => 'Title', 'rules' => 'required'],
-        //         'content' => ['type' => 'textarea', 'label' => 'Content'],
-        //         'category_id' => [
-        //             'type' => 'select',
-        //             'label' => 'Category',
-        //             'relationship' => 'category', // Name of the relationship method in Post model
-        //             'option_label' => 'name',
-        //         ],
-        //         'is_published' => ['type' => 'boolean', 'label' => 'Published'],
-        //     ],
-        // ],
+        'library-items' => [
+            'model' => LibraryItem::class,
+            'title' => 'Library Items',
+            'title_singular' => 'Library Item',
+            'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path stroke-linecap="round" stroke-linejoin="round" d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" /></svg>',
+            'upload_disk' => 'public',
+            'upload_directory' => 'library',
+            'fields' => [
+                'type' => [
+                    'type' => 'select',
+                    'label' => 'Content Type',
+                    'rules' => 'required|in:VIDEO,ARTICLE,RESOURCE',
+                    'options' => [
+                        'VIDEO' => 'Video',
+                        'ARTICLE' => 'Article',
+                        'RESOURCE' => 'Resource',
+                    ],
+                    'searchable' => true,
+                    'sortable' => true,
+                    'default' => 'VIDEO',
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'label' => 'Title',
+                    'rules' => 'required|string|max:255',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'description' => [
+                    'type' => 'textarea',
+                    'label' => 'Short Description',
+                    'rules' => 'nullable|string',
+                    'hide_in_index' => true,
+                ],
+                'primary_topic' => [
+                    'type' => 'text',
+                    'label' => 'Primary Topic',
+                    'rules' => 'required|string|max:255',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'secondary_topic' => [
+                    'type' => 'text',
+                    'label' => 'Secondary Topic',
+                    'rules' => 'nullable|string|max:255',
+                    'searchable' => true,
+                ],
+                'format' => [
+                    'type' => 'text',
+                    'label' => 'Format',
+                    'rules' => 'nullable|string|max:255',
+                    'searchable' => true,
+                ],
+                'difficulty' => [
+                    'type' => 'select',
+                    'label' => 'Difficulty',
+                    'rules' => 'required|in:Beginner,Intermediate,Advanced',
+                    'options' => [
+                        'Beginner' => 'Beginner',
+                        'Intermediate' => 'Intermediate',
+                        'Advanced' => 'Advanced',
+                    ],
+                    'default' => 'Beginner',
+                ],
+                'published_on' => [
+                    'type' => 'date',
+                    'label' => 'Published Date',
+                    'rules' => 'nullable|date',
+                    'sortable' => true,
+                ],
+                'duration_minutes' => [
+                    'type' => 'number',
+                    'label' => 'Video Duration Minutes',
+                    'rules' => 'nullable|integer|min:0',
+                    'default' => 0,
+                    'attributes' => [
+                        'min' => 0,
+                        'step' => 1,
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'thumbnail_image_path' => [
+                    'type' => 'file',
+                    'label' => 'Thumbnail Image',
+                    'rules' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+                    'display_image' => true,
+                    'display_image_position' => 'top',
+                    'attributes' => [
+                        'accept' => 'image/jpeg,image/png,image/webp,image/gif',
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'video_path' => [
+                    'type' => 'file',
+                    'label' => 'Video File',
+                    'rules' => 'nullable|file|mimes:mp4,mov,webm,ogg|max:102400',
+                    'attributes' => [
+                        'accept' => 'video/mp4,video/webm,video/ogg,video/quicktime',
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'content_url' => [
+                    'type' => 'url',
+                    'label' => 'Content URL',
+                    'rules' => 'nullable|url|max:2048',
+                    'hide_in_index' => true,
+                ],
+                'sort_order' => [
+                    'type' => 'number',
+                    'label' => 'Sort Order',
+                    'rules' => 'required|integer|min:0',
+                    'default' => 0,
+                    'sortable' => true,
+                ],
+                'is_published' => [
+                    'type' => 'boolean',
+                    'label' => 'Published',
+                    'default' => true,
+                    'sortable' => true,
+                ],
+            ],
+        ],
+        'blog-posts' => [
+            'model' => BlogPost::class,
+            'title' => 'Blog Posts',
+            'title_singular' => 'Blog Post',
+            'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h8M8 10h8M8 14h5" /></svg>',
+            'upload_disk' => 'public',
+            'upload_directory' => 'blog',
+            'fields' => [
+                'blog_category_id' => [
+                    'type' => 'select',
+                    'label' => 'Category',
+                    'rules' => 'required|exists:blog_categories,id',
+                    'relationship' => 'blogCategory',
+                    'option_label' => 'name',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'label' => 'Title',
+                    'rules' => 'required|string|max:255',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'excerpt' => [
+                    'type' => 'textarea',
+                    'label' => 'Excerpt',
+                    'rules' => 'required|string',
+                    'hide_in_index' => true,
+                ],
+                'content' => [
+                    'type' => 'textarea',
+                    'label' => 'Content',
+                    'rules' => 'nullable|string',
+                    'hide_in_index' => true,
+                ],
+                'published_on' => [
+                    'type' => 'date',
+                    'label' => 'Published Date',
+                    'rules' => 'nullable|date',
+                    'sortable' => true,
+                ],
+                'read_minutes' => [
+                    'type' => 'number',
+                    'label' => 'Read Minutes',
+                    'rules' => 'required|integer|min:1',
+                    'default' => 1,
+                    'attributes' => [
+                        'min' => 1,
+                        'step' => 1,
+                    ],
+                    'sortable' => true,
+                ],
+                'thumbnail_image_path' => [
+                    'type' => 'file',
+                    'label' => 'Thumbnail Image',
+                    'rules' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+                    'display_image' => true,
+                    'display_image_position' => 'top',
+                    'attributes' => [
+                        'accept' => 'image/jpeg,image/png,image/webp,image/gif',
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'thumbnail_style' => [
+                    'type' => 'select',
+                    'label' => 'Fallback Thumbnail Style',
+                    'rules' => 'nullable|string|max:40',
+                    'options' => [
+                        '' => 'Auto',
+                        'bias-img' => 'Bias Image',
+                        'mindset-img' => 'Mindset Image',
+                        'human-img' => 'Human Behavior Image',
+                        'desk-img' => 'Desk Image',
+                        'philosophy-img' => 'Philosophy Image',
+                        'case-img' => 'Case Study Image',
+                        'halo-img' => 'Halo Mini Image',
+                        'ras-img' => 'RAS Mini Image',
+                        'overthink-img' => 'Overthinking Mini Image',
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'is_featured' => [
+                    'type' => 'boolean',
+                    'label' => 'Featured',
+                    'default' => false,
+                    'sortable' => true,
+                ],
+                'is_popular' => [
+                    'type' => 'boolean',
+                    'label' => 'Popular',
+                    'default' => false,
+                    'sortable' => true,
+                ],
+                'sort_order' => [
+                    'type' => 'number',
+                    'label' => 'Sort Order',
+                    'rules' => 'required|integer|min:0',
+                    'default' => 0,
+                    'sortable' => true,
+                ],
+                'is_published' => [
+                    'type' => 'boolean',
+                    'label' => 'Published',
+                    'default' => true,
+                    'sortable' => true,
+                ],
+            ],
+        ],
+        'blog-categories' => [
+            'model' => BlogCategory::class,
+            'title' => 'Blog Categories',
+            'title_singular' => 'Blog Category',
+            'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg>',
+            'fields' => [
+                'name' => [
+                    'type' => 'text',
+                    'label' => 'Name',
+                    'rules' => 'required|string|max:255|unique:blog_categories,name',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'slug' => [
+                    'type' => 'text',
+                    'label' => 'Slug',
+                    'rules' => 'nullable|string|max:255|unique:blog_categories,slug',
+                    'searchable' => true,
+                    'sortable' => true,
+                    'help_text' => 'Leave blank to auto-generate from the name.',
+                ],
+                'description' => [
+                    'type' => 'textarea',
+                    'label' => 'Description',
+                    'rules' => 'nullable|string',
+                    'hide_in_index' => true,
+                ],
+                'sort_order' => [
+                    'type' => 'number',
+                    'label' => 'Sort Order',
+                    'rules' => 'required|integer|min:0',
+                    'default' => 0,
+                    'sortable' => true,
+                ],
+                'is_active' => [
+                    'type' => 'boolean',
+                    'label' => 'Active',
+                    'default' => true,
+                    'sortable' => true,
+                ],
+            ],
+        ],
     ],
 
     /*

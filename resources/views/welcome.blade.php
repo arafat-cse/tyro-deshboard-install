@@ -698,7 +698,7 @@
         .video-thumb::before {
             position: absolute;
             inset: 0;
-            background: url('/images/life-decode-hero.png') center / cover;
+            background: var(--video-thumb-url, url('/images/life-decode-hero.png')) center / cover;
             opacity: .54;
             content: "";
         }
@@ -768,8 +768,10 @@
             min-height: 82px;
             border-radius: 8px;
             background:
-                radial-gradient(circle at 55% 30%, rgba(255, 187, 46, .8), transparent 20%),
+                var(--article-thumb-url, radial-gradient(circle at 55% 30%, rgba(255, 187, 46, .8), transparent 20%)),
                 linear-gradient(135deg, #06111f, #182b43);
+            background-position: center;
+            background-size: cover;
         }
 
         .article h3 {
@@ -1317,20 +1319,41 @@
                     </a>
                 </div>
 
+                @php
+                    $topicSummaries = ($homeLibraryTopicItems ?? $homeLibraryItems ?? collect())
+                        ->groupBy('primary_topic')
+                        ->map(function ($items, $topic) {
+                            $firstItem = $items->first();
+
+                            return (object) [
+                                'title' => $topic,
+                                'copy' => $firstItem?->description ?: 'Explore practical lessons and resources.',
+                                'count' => $items->count(),
+                                'icon' => strtoupper(Str::substr((string) $topic, 0, 1)),
+                            ];
+                        })
+                        ->values()
+                        ->take(6);
+
+                    if ($topicSummaries->isEmpty()) {
+                        $topicSummaries = collect([
+                            (object) ['title' => 'Psychology', 'copy' => 'Understand the mind and human behavior.', 'count' => 28, 'icon' => 'P'],
+                            (object) ['title' => 'Cognitive Biases', 'copy' => 'Discover hidden biases that influence decisions.', 'count' => 24, 'icon' => 'C'],
+                            (object) ['title' => 'Mindset', 'copy' => 'Build a strong mindset for a better life.', 'count' => 26, 'icon' => 'M'],
+                            (object) ['title' => 'Mental Models', 'copy' => 'Think clearly. Solve problems better.', 'count' => 18, 'icon' => 'N'],
+                            (object) ['title' => 'Productivity', 'copy' => 'Get more done with focus and systems.', 'count' => 22, 'icon' => 'F'],
+                            (object) ['title' => 'Philosophy', 'copy' => 'Timeless wisdom for modern life.', 'count' => 16, 'icon' => 'L'],
+                        ]);
+                    }
+                @endphp
+
                 <div class="topics">
-                    @foreach ([
-                        ['Psychology', 'Understand the mind and human behavior.', '28 Articles', 'P'],
-                        ['Cognitive Biases', 'Discover hidden biases that influence decisions.', '24 Articles', 'C'],
-                        ['Mindset', 'Build a strong mindset for a better life.', '26 Articles', 'M'],
-                        ['Mental Models', 'Think clearly. Solve problems better.', '18 Articles', 'N'],
-                        ['Productivity', 'Get more done with focus and systems.', '22 Articles', 'F'],
-                        ['Philosophy', 'Timeless wisdom for modern life.', '16 Articles', 'L'],
-                    ] as [$title, $copy, $count, $icon])
+                    @foreach ($topicSummaries as $topic)
                         <article class="topic-card">
-                            <span class="topic-icon">{{ $icon }}</span>
-                            <h3>{{ $title }}</h3>
-                            <p>{{ $copy }}</p>
-                            <a href="#">{{ $count }}</a>
+                            <span class="topic-icon">{{ $topic->icon }}</span>
+                            <h3>{{ $topic->title }}</h3>
+                            <p>{{ Str::limit($topic->copy, 86) }}</p>
+                            <a href="{{ route('life-decode.library') }}">{{ $topic->count }} {{ Str::plural('Item', $topic->count) }}</a>
                         </article>
                     @endforeach
                 </div>
@@ -1339,51 +1362,72 @@
 
         <section class="section" id="blog">
             <div class="shell content-grid">
+                @php
+                    $featuredLibraryItem = $homeFeaturedLibraryItem ?? ($homeLibraryItems ?? collect())->firstWhere('type', 'VIDEO') ?? ($homeLibraryItems ?? collect())->first();
+                    $featuredLibraryUrl = $featuredLibraryItem
+                        ? route('life-decode.library.show', $featuredLibraryItem)
+                        : route('life-decode.library');
+                    $featuredThumb = $featuredLibraryItem?->thumbnail_image_url;
+                @endphp
+
                 <div>
                     <div class="section-head">
-                        <h2>Featured Video</h2>
-                        <a class="link-blue" href="#">Watch on YouTube</a>
+                        <h2>{{ $featuredLibraryItem?->type === 'VIDEO' ? 'Featured Video' : 'Featured Library' }}</h2>
+                        <a class="link-blue" href="{{ $featuredLibraryUrl }}">Open Resource</a>
                     </div>
 
-                    <article class="video-card">
-                        <div class="video-thumb">
+                    <a class="video-card" href="{{ $featuredLibraryUrl }}">
+                        <div class="video-thumb" @if ($featuredThumb) style="--video-thumb-url: url('{{ $featuredThumb }}');" @endif>
                             <span class="play">
                                 <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                             </span>
                         </div>
                         <div class="video-meta">
-                            <h3>The Halo Effect: How It Affects Every Decision You Make</h3>
-                            <p>The halo effect influences your thoughts, relationships, and decisions without you even realizing it. Learn how to stay aware and make better judgments.</p>
+                            <h3>{{ $featuredLibraryItem?->title ?? 'The Halo Effect: How It Affects Every Decision You Make' }}</h3>
+                            <p>{{ $featuredLibraryItem?->description ?? 'The halo effect influences your thoughts, relationships, and decisions without you even realizing it. Learn how to stay aware and make better judgments.' }}</p>
                             <div class="chips">
-                                <div><span>Cognitive Biases</span><span>Behavior</span></div>
-                                <a class="link-blue" href="#">Watch Now</a>
+                                <div>
+                                    <span>{{ $featuredLibraryItem?->primary_topic ?? 'Cognitive Biases' }}</span>
+                                    @if ($featuredLibraryItem?->secondary_topic)
+                                        <span>{{ $featuredLibraryItem->secondary_topic }}</span>
+                                    @elseif ($featuredLibraryItem?->format)
+                                        <span>{{ $featuredLibraryItem->format }}</span>
+                                    @else
+                                        <span>{{ $featuredLibraryItem?->type ?? 'Behavior' }}</span>
+                                    @endif
+                                </div>
+                                <span class="link-blue">{{ $featuredLibraryItem?->type === 'VIDEO' ? 'Watch Now' : 'Open Now' }}</span>
                             </div>
                         </div>
-                    </article>
+                    </a>
                 </div>
 
                 <div>
                     <div class="section-head">
                         <h2>Popular Articles</h2>
-                        <a class="link-blue" href="#">View All Articles</a>
+                        <a class="link-blue" href="{{ route('life-decode.blog') }}">View All Articles</a>
                     </div>
 
                     <div class="article-list">
-                        @foreach ([
-                            ['10 Cognitive Biases That Control Your Decisions', 'Understand the biases shaping your everyday choices.', 'May 15, 2024  |  12 min read'],
-                            ['The Reticular Activating System Explained', 'How your mind filters reality and shapes your focus.', 'May 12, 2024  |  10 min read'],
-                            ['Why Most People Never Achieve Their Goals', 'The hidden psychological reasons behind unfulfilled goals.', 'May 8, 2024  |  9 min read'],
-                            ['How to Build Discipline That Actually Lasts', 'Science-backed strategies to stay consistent.', 'May 5, 2024  |  11 min read'],
-                        ] as [$title, $copy, $meta])
+                        @forelse (($homeBlogPosts ?? collect()) as $post)
+                            <a class="article" href="{{ route('life-decode.blog.show', $post) }}">
+                                <div class="article-img" @if ($post->thumbnail_url) style="--article-thumb-url: linear-gradient(90deg, rgba(6, 17, 31, .12), rgba(6, 17, 31, .34)), url('{{ $post->thumbnail_url }}');" @endif></div>
+                                <div>
+                                    <h3>{{ $post->title }}</h3>
+                                    <p>{{ $post->excerpt }}</p>
+                                    <small>{{ $post->display_date }} | {{ $post->read_minutes }} min read</small>
+                                </div>
+                            </a>
+                        @empty
                             <article class="article">
                                 <div class="article-img"></div>
                                 <div>
-                                    <h3>{{ $title }}</h3>
-                                    <p>{{ $copy }}</p>
-                                    <small>{{ $meta }}</small>
+                                    <h3>10 Cognitive Biases That Control Your Decisions</h3>
+                                    <p>Understand the biases shaping your everyday choices.</p>
+                                    <small>May 15, 2024 | 12 min read</small>
                                 </div>
                             </article>
-                        @endforeach
+                        @endforelse
                     </div>
                 </div>
             </div>

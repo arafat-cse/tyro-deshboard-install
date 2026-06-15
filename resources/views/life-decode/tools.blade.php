@@ -79,7 +79,7 @@
                         <div class="toolkit-grid">
                             @foreach ($section->items as $item)
                                 <article class="toolkit-card">
-                                    <div class="toolkit-img {{ $item->style_class }}"></div>
+                                    <div class="toolkit-img {{ $item->image_url ? 'uploaded-img' : $item->style_class }}" @if ($item->image_url) style="background-image: linear-gradient(90deg, rgba(6, 17, 31, .34), rgba(6, 17, 31, .08)), url('{{ $item->image_url }}');" @endif></div>
                                     <div class="toolkit-body">
                                         <h3>{{ $item->title }}</h3>
                                         <p>{{ $item->description }}</p>

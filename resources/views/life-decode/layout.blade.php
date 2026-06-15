@@ -1232,6 +1232,12 @@
                 url('/images/life-decode-hero.png') center / cover no-repeat;
         }
 
+        .toolkit-img.uploaded-img {
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
         .toolkit-img.green-img {
             background:
                 linear-gradient(90deg, rgba(6, 45, 38, .86), rgba(9, 86, 55, .25)),
@@ -2980,6 +2986,41 @@
 
         body.dark-mode .link-blue {
             color: #60a5fa;
+        }
+
+        body.dark-mode .resource-card,
+        body.dark-mode .toolkit-card {
+            border-color: rgba(255, 255, 255, .12);
+            background: #0d1b2a;
+            color: #f3f4f6;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .3);
+        }
+
+        body.dark-mode .resource-card h3,
+        body.dark-mode .toolkit-body h3,
+        body.dark-mode .how-step b,
+        body.dark-mode .cat-count {
+            color: #fff;
+        }
+
+        body.dark-mode .resource-card p,
+        body.dark-mode .toolkit-body p,
+        body.dark-mode .how-step p {
+            color: #a8b4c7;
+        }
+
+        body.dark-mode .toolkit-link {
+            border-color: rgba(255, 255, 255, .12);
+            color: #60a5fa;
+        }
+
+        body.dark-mode .how-strip {
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: linear-gradient(100deg, #0d1b2a, #111f30 48%, #0f2530);
+        }
+
+        body.dark-mode .tools-view-all-btn {
+            color: #f8fafc;
         }
 
         body.dark-mode .featured-post .copy {

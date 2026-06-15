@@ -292,6 +292,8 @@ return [
             'title' => 'Tool Items',
             'title_singular' => 'Tool Item',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5h14v14H5zM9 9h6M9 13h6M9 17h3" /></svg>',
+            'upload_disk' => 'public',
+            'upload_directory' => 'tool-items',
             'fields' => [
                 'tool_section_id' => [
                     'type' => 'select',
@@ -315,6 +317,18 @@ return [
                     'label' => 'Description',
                     'rules' => 'nullable|string',
                     'hide_in_index' => true,
+                ],
+                'image_path' => [
+                    'type' => 'file',
+                    'label' => 'Image',
+                    'rules' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+                    'display_image' => true,
+                    'display_image_position' => 'top',
+                    'hide_in_index' => true,
+                    'attributes' => [
+                        'accept' => 'image/jpeg,image/png,image/webp,image/gif',
+                    ],
+                    'help_text' => 'Optional image for toolkit cards. Max 5MB.',
                 ],
                 'icon_text' => [
                     'type' => 'text',

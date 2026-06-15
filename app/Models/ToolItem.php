@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class ToolItem extends Model
 {
@@ -12,6 +13,7 @@ class ToolItem extends Model
         'tool_section_id',
         'title',
         'description',
+        'image_path',
         'icon_text',
         'style_class',
         'meta_one',
@@ -34,6 +36,13 @@ class ToolItem extends Model
     public function section(): BelongsTo
     {
         return $this->belongsTo(ToolSection::class, 'tool_section_id');
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path
+            ? Storage::disk('public')->url($this->image_path)
+            : null;
     }
 
     public function scopePublished(Builder $query): Builder

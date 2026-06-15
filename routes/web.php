@@ -6,17 +6,26 @@ use App\Http\Controllers\Dashboard\TyroResourceController;
 use App\Http\Controllers\LifeDecode\BlogController;
 use App\Http\Controllers\LifeDecode\LibraryController;
 use App\Http\Controllers\LifeDecode\ToolController;
+use App\Models\BlogPost;
 use App\Models\HomePage;
 use App\Models\HomeVideoSlide;
+use App\Models\LibraryItem;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 
 Route::get('/', function () {
     $hasHomeTables = Schema::hasTable('home_pages') && Schema::hasTable('home_video_slides');
+    $hasLibraryTable = Schema::hasTable('library_items');
+    $hasBlogTables = Schema::hasTable('blog_posts') && Schema::hasTable('blog_categories');
+    $publishedLibraryItems = $hasLibraryTable ? LibraryItem::published()->get() : collect();
 
     return view('welcome', [
         'homePage' => $hasHomeTables ? HomePage::first() : null,
         'videoSlides' => $hasHomeTables ? HomeVideoSlide::published()->get() : collect(),
+        'homeLibraryItems' => $publishedLibraryItems->take(6),
+        'homeLibraryTopicItems' => $publishedLibraryItems,
+        'homeFeaturedLibraryItem' => $hasLibraryTable ? LibraryItem::published()->where('type', 'VIDEO')->first() : null,
+        'homeBlogPosts' => $hasBlogTables ? BlogPost::with('blogCategory')->published()->limit(4)->get() : collect(),
     ]);
 });
 

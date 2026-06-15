@@ -29,15 +29,27 @@
 <div class="card" style="margin-bottom: 1rem;">
     <div class="card-body">
         <form action="{{ route($dashboardRoute::name('resources.index'), $resource) }}" method="GET">
-            <div class="filters-bar" style="display: flex; gap: 10px; align-items: center; justify-content: space-between;">
-                <div class="search-box" style="display: flex; gap: 10px; align-items: center;">
+            <div class="filters-bar" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
+                <div class="search-box" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input type="text" name="search" class="form-input" placeholder="Search..." value="{{ request('search') }}">
-                    <!-- <button type="submit" class="btn btn-secondary">Filter</button> -->
-                    @if(request()->has('search'))
-                    <a href="{{ route($dashboardRoute::name('resources.index'), $resource) }}" class="btn btn-ghost">Clear Search</a>
+                    @foreach($config['fields'] as $key => $field)
+                        @if(($field['filterable'] ?? false) && isset($filterOptions[$key]))
+                            <select name="{{ $key }}" class="form-select" onchange="this.form.submit()" style="min-width: 220px;">
+                                <option value="">{{ $field['label'] ?? Str::headline($key) }}: All</option>
+                                @foreach($filterOptions[$key] as $option)
+                                    <option value="{{ $option->id }}" @selected((string) request($key) === (string) $option->id)>
+                                        {{ $option->{$field['option_label'] ?? 'name'} }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @endif
+                    @endforeach
+                    <button type="submit" class="btn btn-secondary">Filter</button>
+                    @if(request()->has('search') || collect($config['fields'])->keys()->contains(fn ($key) => request()->filled($key)))
+                    <a href="{{ route($dashboardRoute::name('resources.index'), $resource) }}" class="btn btn-ghost">Clear Filters</a>
                     @endif
                 </div>
                 <div class="dropdown" style="position: relative; display: flex; gap: 10px;">

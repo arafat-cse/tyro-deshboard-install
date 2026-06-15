@@ -394,6 +394,33 @@
         return showModal(title, message, 'prompt', { defaultValue, placeholder, variant: 'info' });
     }
 
+    document.addEventListener('click', function(event) {
+        const trigger = event.target.closest('[data-confirm-delete]');
+
+        if (!trigger) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const formId = trigger.dataset.deleteForm;
+        const form = formId ? document.getElementById(formId) : trigger.closest('form');
+
+        if (!form) {
+            return;
+        }
+
+        const title = trigger.dataset.deleteTitle || 'Delete Item';
+        const message = trigger.dataset.deleteMessage || 'Are you sure you want to delete this item? This action cannot be undone.';
+        const confirmText = trigger.dataset.deleteConfirm || 'Delete';
+
+        showDanger(title, message, { confirmText }).then(confirmed => {
+            if (confirmed) {
+                form.submit();
+            }
+        });
+    });
+
     // Modal functions
     function openModal(modalId) {
         const modal = document.getElementById(modalId);

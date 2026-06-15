@@ -3,6 +3,8 @@
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\LibraryItem;
+use App\Models\ToolItem;
+use App\Models\ToolSection;
 
 return [
     /*
@@ -223,6 +225,163 @@ return [
     //     // ],
     // ],
     'resources' => [
+        'tool-sections' => [
+            'model' => ToolSection::class,
+            'title' => 'Tool Sections',
+            'title_singular' => 'Tool Section',
+            'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h16" /></svg>',
+            'fields' => [
+                'tool_page_id' => [
+                    'type' => 'select',
+                    'label' => 'Tools Page',
+                    'rules' => 'required|exists:tool_pages,id',
+                    'relationship' => 'page',
+                    'option_label' => 'eyebrow',
+                    'hide_in_index' => true,
+                ],
+                'type' => [
+                    'type' => 'select',
+                    'label' => 'Section Type',
+                    'rules' => 'required|in:hero_points,tool_cards,categories,toolkits,how_steps',
+                    'options' => [
+                        'hero_points' => 'Hero Points',
+                        'tool_cards' => 'Popular Tool Cards',
+                        'categories' => 'Categories',
+                        'toolkits' => 'Toolkits',
+                        'how_steps' => 'How Steps',
+                    ],
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'label' => 'Title',
+                    'rules' => 'required|string|max:255',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'button_text' => [
+                    'type' => 'text',
+                    'label' => 'Button Text',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'button_url' => [
+                    'type' => 'text',
+                    'label' => 'Button URL',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'sort_order' => [
+                    'type' => 'number',
+                    'label' => 'Sort Order',
+                    'rules' => 'required|integer|min:0',
+                    'default' => 0,
+                    'sortable' => true,
+                ],
+                'is_published' => [
+                    'type' => 'boolean',
+                    'label' => 'Published',
+                    'default' => true,
+                    'sortable' => true,
+                ],
+            ],
+        ],
+        'tool-items' => [
+            'model' => ToolItem::class,
+            'title' => 'Tool Items',
+            'title_singular' => 'Tool Item',
+            'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5h14v14H5zM9 9h6M9 13h6M9 17h3" /></svg>',
+            'fields' => [
+                'tool_section_id' => [
+                    'type' => 'select',
+                    'label' => 'Section',
+                    'rules' => 'required|exists:tool_sections,id',
+                    'relationship' => 'section',
+                    'option_label' => 'title',
+                    'filterable' => true,
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'label' => 'Title',
+                    'rules' => 'required|string|max:255',
+                    'searchable' => true,
+                    'sortable' => true,
+                ],
+                'description' => [
+                    'type' => 'textarea',
+                    'label' => 'Description',
+                    'rules' => 'nullable|string',
+                    'hide_in_index' => true,
+                ],
+                'icon_text' => [
+                    'type' => 'text',
+                    'label' => 'Icon Text',
+                    'rules' => 'nullable|string|max:10',
+                    'sortable' => true,
+                ],
+                'style_class' => [
+                    'type' => 'select',
+                    'label' => 'Visual Style',
+                    'rules' => 'nullable|in:,gold-bg,green-bg,purple-bg,pink-bg,green-img,purple-img',
+                    'options' => [
+                        '' => 'Default',
+                        'gold-bg' => 'Gold Icon',
+                        'green-bg' => 'Green Icon',
+                        'purple-bg' => 'Purple Icon',
+                        'pink-bg' => 'Pink Icon',
+                        'green-img' => 'Green Toolkit Image',
+                        'purple-img' => 'Purple Toolkit Image',
+                    ],
+                    'hide_in_index' => true,
+                ],
+                'meta_one' => [
+                    'type' => 'text',
+                    'label' => 'Meta One',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'meta_two' => [
+                    'type' => 'text',
+                    'label' => 'Meta Two',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'meta_three' => [
+                    'type' => 'text',
+                    'label' => 'Meta Three',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'button_text' => [
+                    'type' => 'text',
+                    'label' => 'Button Text',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'button_url' => [
+                    'type' => 'text',
+                    'label' => 'Button URL',
+                    'rules' => 'nullable|string|max:255',
+                    'hide_in_index' => true,
+                ],
+                'sort_order' => [
+                    'type' => 'number',
+                    'label' => 'Sort Order',
+                    'rules' => 'required|integer|min:0',
+                    'default' => 0,
+                    'sortable' => true,
+                ],
+                'is_published' => [
+                    'type' => 'boolean',
+                    'label' => 'Published',
+                    'default' => true,
+                    'sortable' => true,
+                ],
+            ],
+        ],
         'library-items' => [
             'model' => LibraryItem::class,
             'title' => 'Library Items',

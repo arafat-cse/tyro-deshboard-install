@@ -208,6 +208,24 @@
             color: #fff;
         }
 
+        .theme-toggle {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .04);
+            color: #fff;
+            transition: background .2s ease, border-color .2s ease, transform .2s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 187, 46, .54);
+            background: rgba(255, 187, 46, .12);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -995,6 +1013,48 @@
             color: #fff;
         }
 
+        body.dark-mode {
+            --paper: #07111f;
+            --muted: #a8b4c7;
+            background: #07111f;
+            color: #e5edf7;
+        }
+
+        body.dark-mode .section h2,
+        body.dark-mode .topic-card h3,
+        body.dark-mode .mini-feature b,
+        body.dark-mode .signup-box h3 {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .topic-card,
+        body.dark-mode .video-card,
+        body.dark-mode .signup-box {
+            border-color: rgba(255, 255, 255, .12);
+            background: #0d1b2f;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .28);
+        }
+
+        body.dark-mode .checks {
+            color: #dbe6f4;
+        }
+
+        body.dark-mode .email-row input,
+        body.dark-mode .signup-box input {
+            border-color: rgba(255, 255, 255, .16);
+            background: #081525;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .email-row input::placeholder,
+        body.dark-mode .signup-box input::placeholder {
+            color: #7f8ea3;
+        }
+
+        body.dark-mode .toolkit .tiny-icon {
+            background: rgba(255, 255, 255, .04);
+        }
+
         .site-footer {
             margin-top: 48px;
             padding: 54px 0;
@@ -1079,6 +1139,7 @@
 
             .brand small,
             .icon-btn,
+            .theme-toggle,
             .nav-actions .btn-dark {
                 display: none;
             }
@@ -1178,6 +1239,11 @@
                 <button class="icon-btn" type="button" aria-label="Search">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                         <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+                    <svg class="sun-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.7-5.7 1.4-1.4M4.9 19.1l1.4-1.4m0-11.4L4.9 4.9m14.2 14.2-1.4-1.4M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
                 @if (Route::has('tyro-login.login'))
@@ -1520,6 +1586,29 @@
         </div>
     </footer>
     <script>
+        (() => {
+            const themeToggle = document.querySelector('[data-theme-toggle]');
+            const storageKey = 'ld-theme';
+
+            const setTheme = (theme) => {
+                const isDark = theme === 'dark';
+                document.body.classList.toggle('dark-mode', isDark);
+
+                if (themeToggle) {
+                    themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+                }
+            };
+
+            const storedTheme = localStorage.getItem(storageKey);
+            setTheme(storedTheme === 'dark' ? 'dark' : 'light');
+
+            themeToggle?.addEventListener('click', () => {
+                const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+                localStorage.setItem(storageKey, nextTheme);
+                setTheme(nextTheme);
+            });
+        })();
+
         (() => {
             const button = document.querySelector('[data-menu-toggle]');
             const navigation = document.querySelector('[data-mobile-nav]');

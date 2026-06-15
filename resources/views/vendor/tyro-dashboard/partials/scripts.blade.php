@@ -21,13 +21,9 @@
 
     function updateThemeIcons(theme) {
         const sunIcons = document.querySelectorAll('.sun-icon');
-        const moonIcons = document.querySelectorAll('.moon-icon');
         
         sunIcons.forEach(icon => {
-            icon.style.display = theme === 'dark' ? 'block' : 'none';
-        });
-        moonIcons.forEach(icon => {
-            icon.style.display = theme === 'dark' ? 'none' : 'block';
+            icon.style.display = 'block';
         });
     }
 

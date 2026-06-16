@@ -434,12 +434,16 @@
     }
 
     .topbar-btn {
-        padding: 0.5rem;
-        border: none;
-        background: transparent;
-        color: var(--muted-foreground);
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        padding: 0;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--foreground);
         cursor: pointer;
-        border-radius: 6px;
+        border-radius: 50%;
         transition: all 0.15s ease;
     }
 

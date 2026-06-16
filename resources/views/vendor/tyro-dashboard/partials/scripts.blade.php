@@ -21,13 +21,9 @@
 
     function updateThemeIcons(theme) {
         const sunIcons = document.querySelectorAll('.sun-icon');
-        const moonIcons = document.querySelectorAll('.moon-icon');
         
         sunIcons.forEach(icon => {
-            icon.style.display = theme === 'dark' ? 'block' : 'none';
-        });
-        moonIcons.forEach(icon => {
-            icon.style.display = theme === 'dark' ? 'none' : 'block';
+            icon.style.display = 'block';
         });
     }
 
@@ -393,6 +389,33 @@
     function showPrompt(title, message, defaultValue = '', placeholder = '') {
         return showModal(title, message, 'prompt', { defaultValue, placeholder, variant: 'info' });
     }
+
+    document.addEventListener('click', function(event) {
+        const trigger = event.target.closest('[data-confirm-delete]');
+
+        if (!trigger) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const formId = trigger.dataset.deleteForm;
+        const form = formId ? document.getElementById(formId) : trigger.closest('form');
+
+        if (!form) {
+            return;
+        }
+
+        const title = trigger.dataset.deleteTitle || 'Delete Item';
+        const message = trigger.dataset.deleteMessage || 'Are you sure you want to delete this item? This action cannot be undone.';
+        const confirmText = trigger.dataset.deleteConfirm || 'Delete';
+
+        showDanger(title, message, { confirmText }).then(confirmed => {
+            if (confirmed) {
+                form.submit();
+            }
+        });
+    });
 
     // Modal functions
     function openModal(modalId) {

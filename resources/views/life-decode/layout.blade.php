@@ -149,42 +149,28 @@
         }
 
         .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-height: 34px;
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
             border: 1px solid rgba(255, 255, 255, .16);
-            border-radius: 999px;
-            padding: 0 10px;
+            border-radius: 50%;
             background: rgba(255, 255, 255, .04);
-            color: rgba(255, 255, 255, .5);
+            color: #fff;
             cursor: pointer;
-            transition: all .2s ease;
+            transition: background .2s ease, border-color .2s ease, transform .2s ease;
         }
 
         .theme-toggle:hover {
-            border-color: rgba(255, 255, 255, .3);
-            color: rgba(255, 255, 255, .8);
+            transform: translateY(-1px);
+            border-color: rgba(255, 187, 46, .54);
+            background: rgba(255, 187, 46, .12);
         }
 
         .theme-toggle svg {
-            width: 14px;
-            height: 14px;
-            stroke-width: 2.2;
-        }
-
-        .theme-toggle .toggle-sun.active {
-            color: var(--gold);
-        }
-
-        .theme-toggle .toggle-moon.active {
-            color: #93c5fd;
-        }
-
-        .toggle-divider {
-            width: 1px;
-            height: 12px;
-            background: rgba(255, 255, 255, .15);
+            width: 19px;
+            height: 19px;
+            stroke-width: 2;
         }
 
         .menu-toggle {
@@ -1244,6 +1230,12 @@
             background:
                 linear-gradient(90deg, rgba(6, 17, 31, .85), rgba(6, 17, 31, .2)),
                 url('/images/life-decode-hero.png') center / cover no-repeat;
+        }
+
+        .toolkit-img.uploaded-img {
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
         .toolkit-img.green-img {
@@ -2996,6 +2988,41 @@
             color: #60a5fa;
         }
 
+        body.dark-mode .resource-card,
+        body.dark-mode .toolkit-card {
+            border-color: rgba(255, 255, 255, .12);
+            background: #0d1b2a;
+            color: #f3f4f6;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .3);
+        }
+
+        body.dark-mode .resource-card h3,
+        body.dark-mode .toolkit-body h3,
+        body.dark-mode .how-step b,
+        body.dark-mode .cat-count {
+            color: #fff;
+        }
+
+        body.dark-mode .resource-card p,
+        body.dark-mode .toolkit-body p,
+        body.dark-mode .how-step p {
+            color: #a8b4c7;
+        }
+
+        body.dark-mode .toolkit-link {
+            border-color: rgba(255, 255, 255, .12);
+            color: #60a5fa;
+        }
+
+        body.dark-mode .how-strip {
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: linear-gradient(100deg, #0d1b2a, #111f30 48%, #0f2530);
+        }
+
+        body.dark-mode .tools-view-all-btn {
+            color: #f8fafc;
+        }
+
         body.dark-mode .featured-post .copy {
             color: #9ca3af;
         }
@@ -3004,22 +3031,6 @@
             opacity: 0.85;
         }
 
-        /* Theme toggle active states */
-        .toggle-sun {
-            color: rgba(255, 255, 255, .4);
-        }
-
-        .toggle-moon {
-            color: rgba(255, 255, 255, .4);
-        }
-
-        .toggle-sun.active {
-            color: var(--gold);
-        }
-
-        .toggle-moon.active {
-            color: #93c5fd;
-        }
     </style>
 </head>
 
@@ -3062,17 +3073,9 @@
                     </svg>
                 </button>
                 <button class="theme-toggle" type="button" aria-label="Toggle theme">
-                    <span class="toggle-sun active"><svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="5" stroke="currentColor" fill="currentColor" />
-                            <path
-                                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-                                stroke="currentColor" stroke-linecap="round" />
-                        </svg></span>
-                    <span class="toggle-divider"></span>
-                    <span class="toggle-moon"><svg viewBox="0 0 24 24" fill="none">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor"
-                                fill="none" />
-                        </svg></span>
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.7-5.7 1.4-1.4M4.9 19.1l1.4-1.4m0-11.4L4.9 4.9m14.2 14.2-1.4-1.4M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
                 </button>
                 <a class="btn btn-primary" href="{{ route('life-decode.tools') }}">The Mental Toolkit
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -3176,18 +3179,12 @@
 
             /* ---- Theme Toggle (Dark / Light) ---- */
             const themeToggleBtn = document.querySelector('.theme-toggle');
-            const sunIcon = document.querySelector('.toggle-sun');
-            const moonIcon = document.querySelector('.toggle-moon');
 
             const applyTheme = (isDark) => {
                 if (isDark) {
                     document.body.classList.add('dark-mode');
-                    if (sunIcon) sunIcon.classList.remove('active');
-                    if (moonIcon) moonIcon.classList.add('active');
                 } else {
                     document.body.classList.remove('dark-mode');
-                    if (sunIcon) sunIcon.classList.add('active');
-                    if (moonIcon) moonIcon.classList.remove('active');
                 }
             };
 

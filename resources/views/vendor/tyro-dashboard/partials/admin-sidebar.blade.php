@@ -112,6 +112,12 @@
                 </svg>
                 Home Page
             </a>
+            <a href="{{ route('dashboard.tools-page.edit') }}" class="sidebar-link {{ request()->routeIs('dashboard.tools-page.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                </svg>
+                Tools Page
+            </a>
             @if(config('tyro-dashboard.features.invitation_system', true))
             <a href="{{ route($dashboardRoute::name('invitations.admin.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('invitations.admin.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -225,7 +225,7 @@
                 </div>
 
                 @elseif($field['type'] === 'file')
-                <input type="file" name="{{ $key }}" id="{{ $key }}" class="form-input @error($key) is-invalid @enderror">
+                <input type="file" name="{{ $key }}" id="{{ $key }}" class="form-input @error($key) is-invalid @enderror" @if(isset($field['attributes'])) @foreach($field['attributes'] as $attr => $value) {{ $attr }}="{{ $value }}" @endforeach @endif>
 
                 @elseif($field['type'] === 'boolean')
                 <div class="form-check">

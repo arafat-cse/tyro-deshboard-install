@@ -1,5 +1,6 @@
 @php
     $canDashboard = fn (string|array $permission): bool => \App\Support\DashboardAccess::can(auth()->user(), $permission);
+    $sidebarResources = ! empty($allResources ?? []) ? $allResources : config('tyro-dashboard.resources', []);
 @endphp
 
 <aside class="sidebar" id="sidebar">
@@ -258,8 +259,8 @@
             </details>
             @endif
 
-            @if(!empty($allResources ?? config('tyro-dashboard.resources')))
-            @foreach($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource)
+            @if(!empty($sidebarResources))
+            @foreach($sidebarResources as $key => $resource)
                 @continue(in_array($key, ['tool-sections', 'tool-items'], true))
 
                 @php

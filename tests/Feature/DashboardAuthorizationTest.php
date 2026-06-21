@@ -89,3 +89,32 @@ test('user management can be granted without making the role a full admin', func
         ->get('/dashboard/roles')
         ->assertForbidden();
 });
+
+test('permissioned non admin users see the permission based dashboard sidebar', function () {
+    $role = Role::create([
+        'name' => 'Demo',
+        'slug' => 'demo',
+    ]);
+
+    foreach (['manage-system-settings', 'manage-home-page', 'manage-about-page', 'manage-tools-page', 'manage-library', 'manage-blog'] as $slug) {
+        $role->attachPrivilege(Privilege::create([
+            'name' => str($slug)->replace('-', ' ')->title()->toString(),
+            'slug' => $slug,
+        ]));
+    }
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+
+    $this->actingAs($user)
+        ->get('/dashboard')
+        ->assertSuccessful()
+        ->assertSee('System Settings')
+        ->assertSee('Home Management')
+        ->assertSee('About Management')
+        ->assertSee('Tools Management')
+        ->assertSee('Library Items')
+        ->assertSee('Blog Posts')
+        ->assertDontSee(route('tyro-dashboard.users.index'), false)
+        ->assertDontSee(route('tyro-dashboard.roles.index'), false);
+});

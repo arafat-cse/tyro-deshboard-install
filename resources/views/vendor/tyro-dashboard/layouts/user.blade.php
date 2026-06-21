@@ -20,8 +20,12 @@
 <body>
     @include('tyro-dashboard::partials.admin-bar')
     <div class="dashboard-layout">
-        <!-- User Sidebar -->
-        @include('tyro-dashboard::partials.user-sidebar')
+        <!-- Sidebar -->
+        @if(($isAdmin ?? false) || \App\Support\DashboardAccess::canAny(auth()->user(), config('dashboard-permissions.sidebar_permissions', [])))
+            @include('tyro-dashboard::partials.admin-sidebar')
+        @else
+            @include('tyro-dashboard::partials.user-sidebar')
+        @endif
 
         <!-- Main Content -->
         <div class="main-content">
@@ -49,4 +53,3 @@
 </body>
 
 </html>
-

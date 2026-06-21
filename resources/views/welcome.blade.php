@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Life Decode - Decode life. Live amplified.</title>
+    <title>{{ $systemSettings->default_meta_title ?? 'Life Decode - Decode life. Live amplified.' }}</title>
+    <meta name="description" content="{{ $systemSettings->default_meta_description ?? 'A knowledge hub for understanding psychology, behavior, and life systems.' }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1023,18 +1024,30 @@
         body.dark-mode .section h2,
         body.dark-mode .topic-card h3,
         body.dark-mode .mini-feature b,
+        body.dark-mode .toolkit h2,
         body.dark-mode .signup-box h3 {
             color: #f8fafc;
         }
 
         body.dark-mode .topic-card,
         body.dark-mode .video-card,
+        body.dark-mode .toolkit,
         body.dark-mode .signup-box {
             border-color: rgba(255, 255, 255, .12);
             background: #0d1b2f;
             box-shadow: 0 18px 42px rgba(0, 0, 0, .28);
         }
 
+        body.dark-mode .toolkit {
+            background: linear-gradient(100deg, #081525, #0d1b2f 48%, #10233a);
+        }
+
+        body.dark-mode .label {
+            background: rgba(255, 187, 46, .14);
+            color: var(--gold);
+        }
+
+        body.dark-mode .toolkit p,
         body.dark-mode .checks {
             color: #dbe6f4;
         }
@@ -1211,7 +1224,13 @@
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
+    @php
+        $settings = $systemSettings ?? null;
+        $brandName = $settings?->site_name ?: 'Life Decode';
+        $brandHighlight = $settings?->site_name_highlight ?: 'Decode';
+        $brandPrefix = trim(str_ireplace($brandHighlight, '', $brandName)) ?: 'Life';
+    @endphp
     <header class="site-header">
         <div class="shell nav">
             <a class="brand" href="/">
@@ -1221,8 +1240,8 @@
                     </svg>
                 </span>
                 <span>
-                    <strong>LIFE <span>DECODE</span></strong>
-                    <small>Decode life. Live amplified.</small>
+                    <strong>{{ strtoupper($brandPrefix) }} <span>{{ strtoupper($brandHighlight) }}</span></strong>
+                    <small>{{ $settings?->tagline ?: 'Decode life. Live amplified.' }}</small>
                 </span>
             </a>
 
@@ -1236,23 +1255,23 @@
             </nav>
 
             <div class="nav-actions">
-                <button class="icon-btn" type="button" aria-label="Search">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </button>
+                @if ($settings?->show_header_search ?? true)
+                    <button class="icon-btn" type="button" aria-label="Search">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                @endif
                 <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
                     <svg class="sun-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.7-5.7 1.4-1.4M4.9 19.1l1.4-1.4m0-11.4L4.9 4.9m14.2 14.2-1.4-1.4M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
-                @if (Route::has('tyro-login.login'))
+                @if (($settings?->show_login_link ?? false) && Route::has('tyro-login.login'))
                     <a class="btn btn-dark" href="{{ route('tyro-login.login') }}">Login</a>
                 @endif
-                @if (Route::has('tyro-login.register'))
-                    <a class="btn btn-primary" href="{{ route('tyro-login.register') }}">Join Community</a>
-                @else
-                    <a class="btn btn-primary" href="{{ route('life-decode.community') }}">Join Community</a>
+                @if ($settings?->show_header_cta ?? true)
+                    <a class="btn btn-primary" href="{{ $settings?->header_cta_url ?: route('life-decode.community') }}">{{ $settings?->header_cta_text ?: 'Join Community' }}</a>
                 @endif
                 <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation" aria-expanded="false" data-menu-toggle>
                     <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -1552,37 +1571,39 @@
             </div>
         </section>
 
-        <section class="section" id="newsletter" style="padding-top:20px;">
-            <div class="shell newsletter">
-                <div>
-                    <h3>Decode better. Live better.</h3>
-                    <p>Get weekly insights, frameworks, and resources to upgrade your mind.</p>
+        @if ($settings?->show_newsletter ?? true)
+            <section class="section" id="newsletter" style="padding-top:20px;">
+                <div class="shell newsletter">
+                    <div>
+                        <h3>{{ $settings?->newsletter_title ?: 'Decode better. Live better.' }}</h3>
+                        <p>{{ $settings?->newsletter_subtitle ?: 'Get weekly insights, frameworks, and resources to upgrade your mind.' }}</p>
+                    </div>
+                    <form class="email-row">
+                        <input type="email" placeholder="{{ $settings?->newsletter_placeholder ?: 'Enter your email' }}" aria-label="Newsletter email">
+                        <button class="btn btn-primary" type="button">{{ $settings?->newsletter_button_text ?: 'Subscribe' }}</button>
+                    </form>
                 </div>
-                <form class="email-row">
-                    <input type="email" placeholder="Enter your email" aria-label="Newsletter email">
-                    <button class="btn btn-primary" type="button">Subscribe</button>
-                </form>
-            </div>
-        </section>
+            </section>
+        @endif
     </main>
 
     <footer class="site-footer">
         <div class="shell footer-grid">
             <div>
                 <a class="brand" href="/">
-                    <span class="brand-mark" aria-hidden="true">LD</span>
+                    <span class="brand-mark" aria-hidden="true">{{ $settings?->brand_mark ?: 'LD' }}</span>
                     <span>
-                        <strong>LIFE <span>DECODE</span></strong>
-                        <small>Decode life. Live amplified.</small>
+                        <strong>{{ strtoupper($brandPrefix) }} <span>{{ strtoupper($brandHighlight) }}</span></strong>
+                        <small>{{ $settings?->tagline ?: 'Decode life. Live amplified.' }}</small>
                     </span>
                 </a>
-                <p style="margin-top:18px;">A knowledge hub for understanding psychology, behavior, and life systems to help you think clearly and live intentionally.</p>
+                <p style="margin-top:18px;">{{ $settings?->footer_description ?: 'A knowledge hub for understanding psychology, behavior, and life systems to help you think clearly and live intentionally.' }}</p>
             </div>
             <div><h4>Explore</h4><a href="{{ route('life-decode.library') }}">Library</a><a href="{{ route('life-decode.blog') }}">Blog</a><a href="{{ route('life-decode.tools') }}">Tools</a><a href="{{ route('life-decode.community') }}">Community</a></div>
             <div><h4>Topics</h4><a href="#">Psychology</a><a href="#">Cognitive Biases</a><a href="#">Mindset</a><a href="#">Productivity</a></div>
             <div><h4>Resources</h4><a href="{{ route('life-decode.tools') }}">Mental Toolkit</a><a href="#">Worksheets</a><a href="#">Templates</a><a href="#">Guides</a></div>
             <div><h4>Company</h4><a href="{{ route('life-decode.about') }}">About Life Decode</a><a href="#">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
-            <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you gain.<br><small>- Life Decode</small></div>
+            <div class="footer-quote"><span class="gold">"</span><br>{{ $settings?->footer_quote_text ?: 'The more you understand, the more freedom you gain.' }}<br><small>- {{ $settings?->footer_quote_author ?: 'Life Decode' }}</small></div>
         </div>
     </footer>
     <script>
@@ -1600,7 +1621,7 @@
             };
 
             const storedTheme = localStorage.getItem(storageKey);
-            setTheme(storedTheme === 'dark' ? 'dark' : 'light');
+            setTheme(storedTheme === 'light' ? 'light' : 'dark');
 
             themeToggle?.addEventListener('click', () => {
                 const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';

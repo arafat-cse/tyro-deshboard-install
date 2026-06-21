@@ -125,6 +125,7 @@
 
     .sidebar.collapsed .sidebar-logo-text,
     .sidebar.collapsed .sidebar-section-title,
+    .sidebar.collapsed .sidebar-nested-group,
     .sidebar.collapsed .sidebar-link {
         opacity: 0;
         visibility: hidden;
@@ -312,6 +313,72 @@
 
     [data-sidebar-accordion][data-sidebar-accordion-compact="true"]:not([data-sidebar-accordion-ready="true"]) .sidebar-section > .sidebar-link {
         display: none;
+    }
+
+    .sidebar-nested-group {
+        margin: 0.25rem 0 0.4rem;
+    }
+
+    .sidebar-nested-summary {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 38px;
+        padding: 0.5rem 2.25rem 0.5rem 1rem;
+        border-radius: 6px;
+        color: var(--sidebar-foreground);
+        cursor: pointer;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        list-style: none;
+        user-select: none;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .sidebar-nested-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .sidebar-nested-summary:hover {
+        background-color: var(--sidebar-accent);
+        color: var(--sidebar-accent-foreground);
+    }
+
+    .sidebar-nested-summary::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        width: 0.45rem;
+        height: 0.45rem;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: translateY(-50%) rotate(-45deg);
+        transition: transform 0.15s ease;
+        opacity: 0.75;
+    }
+
+    .sidebar-nested-group[open] > .sidebar-nested-summary::after {
+        transform: translateY(-65%) rotate(45deg);
+    }
+
+    .sidebar-nested-summary svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    .sidebar-nested-content {
+        margin-top: 0.15rem;
+        padding-left: 0.7rem;
+        border-left: 1px solid color-mix(in srgb, var(--sidebar-foreground) 16%, transparent);
+        margin-left: 1.25rem;
+    }
+
+    .sidebar-nested-content .sidebar-link {
+        padding-left: 0.75rem;
+        font-size: 0.875rem;
     }
 
     .sidebar-link {

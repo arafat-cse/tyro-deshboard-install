@@ -106,12 +106,6 @@
                 </svg>
                 System Settings
             </a>
-            <a href="{{ route('dashboard.home-page.edit') }}" class="sidebar-link {{ request()->routeIs('dashboard.home-page.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M5 9h14v10H5zM8 13h3m3 0h2m-8 3h8" />
-                </svg>
-                Home Page
-            </a>
             <a href="{{ route('dashboard.tools-page.edit') }}" class="sidebar-link {{ request()->routeIs('dashboard.tools-page.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
@@ -165,10 +159,84 @@
 
         </div>
 
-        @if(!empty($allResources ?? config('tyro-dashboard.resources')))
         <div class="sidebar-section">
             <div class="sidebar-section-title">Resources</div>
+            <details class="sidebar-nested-group" {{ request()->routeIs('dashboard.home-management.*') ? 'open' : '' }}>
+                <summary class="sidebar-nested-summary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M5 9h14v10H5zM8 13h3m3 0h2m-8 3h8" />
+                    </svg>
+                    Home Management
+                </summary>
+                <div class="sidebar-nested-content">
+                    @foreach([
+                        'hero' => 'Hero',
+                        'video-slider' => 'Video Slider',
+                    ] as $homeSection => $homeLabel)
+                        <a href="{{ route('dashboard.home-management.edit', $homeSection) }}" class="sidebar-link {{ request()->routeIs('dashboard.home-management.edit') && request()->route('section') === $homeSection ? 'active' : '' }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10" />
+                            </svg>
+                            {{ $homeLabel }}
+                        </a>
+                    @endforeach
+                </div>
+            </details>
+
+            <details class="sidebar-nested-group" {{ request()->routeIs('dashboard.about-management.*') ? 'open' : '' }}>
+                <summary class="sidebar-nested-summary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 21a8 8 0 0 1 16 0M4 3h16" />
+                    </svg>
+                    About Management
+                </summary>
+                <div class="sidebar-nested-content">
+                    @foreach([
+                        'about-hero' => 'About Hero',
+                        'our-mission' => 'Our Mission',
+                        'the-creator' => 'The Creator',
+                        'credentials-approach' => 'Credentials & Approach',
+                        'social-media' => 'Social Media',
+                        'our-journey' => 'Our Journey',
+                    ] as $aboutSection => $aboutLabel)
+                        <a href="{{ route('dashboard.about-management.edit', $aboutSection) }}" class="sidebar-link {{ request()->routeIs('dashboard.about-management.edit') && request()->route('section') === $aboutSection ? 'active' : '' }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10" />
+                            </svg>
+                            {{ $aboutLabel }}
+                        </a>
+                    @endforeach
+                </div>
+            </details>
+
+            <details class="sidebar-nested-group" {{ request()->is('*/resources/tool-items*') || request()->is('*/resources/tool-sections*') ? 'open' : '' }}>
+                <summary class="sidebar-nested-summary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                    </svg>
+                    Tools Management
+                </summary>
+                <div class="sidebar-nested-content">
+                    <a href="{{ route($dashboardRoute::name('resources.index'), 'tool-sections') }}" class="sidebar-link {{ request()->is('*resources/tool-sections*') ? 'active' : '' }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h16" />
+                        </svg>
+                        Tool Sections
+                    </a>
+                    <a href="{{ route($dashboardRoute::name('resources.index'), 'tool-items') }}" class="sidebar-link {{ request()->is('*resources/tool-items*') ? 'active' : '' }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 5h14v14H5zM9 9h6M9 13h6M9 17h3" />
+                        </svg>
+                        Tool Items
+                    </a>
+                </div>
+            </details>
+
+            @if(!empty($allResources ?? config('tyro-dashboard.resources')))
             @foreach($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource)
+                @continue(in_array($key, ['tool-sections', 'tool-items'], true))
+
                 @php
                     // Check access (logic duplicated from Controller for view)
                     $canAccess = true;
@@ -210,8 +278,8 @@
                 </a>
                 @endif
             @endforeach
+            @endif
         </div>
-        @endif
 
         @if(!config('tyro-dashboard.disable_examples', false) && !app()->environment('production'))
         <div class="sidebar-section">

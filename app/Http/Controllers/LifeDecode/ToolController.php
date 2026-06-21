@@ -22,4 +22,46 @@ class ToolController extends Controller
             'contentSections' => $toolPage?->sections->where('type', '!=', 'hero_points') ?? collect(),
         ]);
     }
+
+    public function popular(): View
+    {
+        $toolPage = ToolPage::with([
+            'sections' => fn ($query) => $query->published()->where('type', 'tool_cards')->with([
+                'items' => fn ($query) => $query->published(),
+            ]),
+        ])->first();
+
+        return view('life-decode.popular-tools', [
+            'toolPage' => $toolPage,
+            'popularSection' => $toolPage?->sections->first(),
+        ]);
+    }
+
+    public function categories(): View
+    {
+        $toolPage = ToolPage::with([
+            'sections' => fn ($query) => $query->published()->where('type', 'categories')->with([
+                'items' => fn ($query) => $query->published(),
+            ]),
+        ])->first();
+
+        return view('life-decode.tool-categories', [
+            'toolPage' => $toolPage,
+            'categorySection' => $toolPage?->sections->first(),
+        ]);
+    }
+
+    public function toolkits(): View
+    {
+        $toolPage = ToolPage::with([
+            'sections' => fn ($query) => $query->published()->where('type', 'toolkits')->with([
+                'items' => fn ($query) => $query->published(),
+            ]),
+        ])->first();
+
+        return view('life-decode.toolkits', [
+            'toolPage' => $toolPage,
+            'toolkitSection' => $toolPage?->sections->first(),
+        ]);
+    }
 }

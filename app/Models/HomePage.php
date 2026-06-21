@@ -15,6 +15,5 @@ class HomePage extends Model
         'primary_button_url',
         'secondary_button_text',
         'secondary_button_url',
-        'community_text',
     ];
 }

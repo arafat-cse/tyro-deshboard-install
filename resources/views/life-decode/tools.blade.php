@@ -22,17 +22,21 @@
             <div class="shell">
                 @foreach ($contentSections as $section)
                     @if ($section->type === 'tool_cards')
-                        <div class="section-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                        @php
+                            $hasMorePopularTools = $section->items->count() > 6;
+                        @endphp
+
+                        <div id="popular-tools" class="section-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                             <h2 class="section-title" style="margin-bottom:0;">{{ $section->title }}</h2>
-                            @if ($section->button_text)
-                                <a class="link-blue" href="{{ $section->button_url ?? '#' }}">{{ $section->button_text }}
+                            @if ($hasMorePopularTools && $section->button_text)
+                                <a class="link-blue" href="{{ route('life-decode.tools.popular') }}">{{ $section->button_text }}
                                     <svg style="display:inline-block;vertical-align:-4px" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </a>
                             @endif
                         </div>
 
                         <div class="soft-grid">
-                            @foreach ($section->items as $item)
+                            @foreach ($section->items->take(6) as $item)
                                 <article class="resource-card">
                                     <span class="icon-tile {{ $item->style_class }}">{{ $item->icon_text }}</span>
                                     <h3>{{ $item->title }}</h3>
@@ -46,9 +50,21 @@
                             @endforeach
                         </div>
                     @elseif ($section->type === 'categories')
-                        <h2 class="section-title" style="margin-top:36px;">{{ $section->title }}</h2>
+                        @php
+                            $hasMoreCategories = $section->items->count() > 6;
+                        @endphp
+
+                        <div id="tool-categories" class="section-head" style="display:flex;justify-content:space-between;align-items:center;margin:36px 0 20px;">
+                            <h2 class="section-title" style="margin-bottom:0;">{{ $section->title }}</h2>
+                            @if ($hasMoreCategories && $section->button_text)
+                                <a class="link-blue" href="{{ route('life-decode.tools.categories') }}">{{ $section->button_text }}
+                                    <svg style="display:inline-block;vertical-align:-4px" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </a>
+                            @endif
+                        </div>
+
                         <div class="soft-grid">
-                            @foreach ($section->items as $item)
+                            @foreach ($section->items->take(6) as $item)
                                 <article class="resource-card category-soft">
                                     <span class="icon-tile {{ $item->style_class }}">{{ $item->icon_text }}</span>
                                     <h3>{{ $item->title }}</h3>
@@ -59,25 +75,18 @@
                                 </article>
                             @endforeach
                         </div>
-                        @if ($section->button_text)
-                            <div style="margin-top:20px;text-align:center;">
-                                <a class="btn btn-dark tools-view-all-btn" href="{{ $section->button_url ?? '#' }}">{{ $section->button_text }}
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                </a>
-                            </div>
-                        @endif
                     @elseif ($section->type === 'toolkits')
-                        <div class="section-head" style="display:flex;justify-content:space-between;align-items:center;margin:34px 0 18px;">
+                        <div id="toolkits" class="section-head" style="display:flex;justify-content:space-between;align-items:center;margin:34px 0 18px;">
                             <h2 class="section-title" style="margin-bottom:0;">{{ $section->title }}</h2>
                             @if ($section->button_text)
-                                <a class="link-blue" href="{{ $section->button_url ?? '#' }}">{{ $section->button_text }}
+                                <a class="link-blue" href="{{ route('life-decode.tools.toolkits') }}">{{ $section->button_text }}
                                     <svg style="display:inline-block;vertical-align:-4px" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </a>
                             @endif
                         </div>
 
                         <div class="toolkit-grid">
-                            @foreach ($section->items as $item)
+                            @foreach ($section->items->take(6) as $item)
                                 <article class="toolkit-card">
                                     <div class="toolkit-img {{ $item->image_url ? 'uploaded-img' : $item->style_class }}" @if ($item->image_url) style="background-image: linear-gradient(90deg, rgba(6, 17, 31, .34), rgba(6, 17, 31, .08)), url('{{ $item->image_url }}');" @endif></div>
                                     <div class="toolkit-body">

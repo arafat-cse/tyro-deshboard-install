@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Life Decode - Decode life. Live amplified.')</title>
+    <title>@yield('title', $systemSettings->default_meta_title ?? 'Life Decode - Decode life. Live amplified.')</title>
+    <meta name="description" content="{{ $systemSettings->default_meta_description ?? 'A knowledge hub for understanding psychology, behavior, and life systems.' }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -285,11 +286,11 @@
 
         .about-hero {
             display: grid;
-            grid-template-columns: .95fr 1.05fr;
-            min-height: 390px;
+            grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+            min-height: 520px;
             align-items: center;
-            gap: 40px;
-            padding: 42px 0 0;
+            gap: 56px;
+            padding: 58px 0 46px;
         }
 
         .eyebrow {
@@ -320,16 +321,18 @@
         .hero-metrics {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
+            gap: 14px;
             max-width: 620px;
             margin-top: 30px;
-            background: rgba(255, 255, 255, .14);
         }
 
         .hero-metric {
-            min-height: 110px;
-            padding: 0 18px 0 0;
-            background: #061426;
+            min-height: 124px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 8px;
+            background: rgba(6, 20, 38, .78);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, .16);
         }
 
         .hero-metric svg {
@@ -351,19 +354,20 @@
 
         .about-hero-art {
             align-self: stretch;
-            min-height: 390px;
-            background: url('/images/about-creator.png') center right / cover no-repeat;
-            mask-image: linear-gradient(90deg, transparent, #000 18%);
+            min-height: 420px;
+            border-radius: 10px;
+            background: url('/images/about-creator.png') center / cover no-repeat;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, .22);
         }
 
         .section {
-            padding: 42px 0;
+            padding: 64px 0;
         }
 
         .split {
             display: grid;
-            grid-template-columns: 1fr 1fr 270px;
-            gap: 34px;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, .95fr) minmax(240px, .55fr);
+            gap: 42px;
             align-items: start;
         }
 
@@ -392,7 +396,7 @@
         .mission-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 26px;
+            gap: 16px;
             margin-top: 28px;
         }
 
@@ -401,6 +405,12 @@
             grid-template-columns: 48px 1fr;
             gap: 15px;
             align-items: start;
+            min-height: 118px;
+            padding: 18px;
+            border: 1px solid #e8eef5;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 14px 32px rgba(15, 23, 42, .05);
         }
 
         .round-icon {
@@ -442,7 +452,7 @@
         .creator-photo {
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(15, 23, 42, .12);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, .10);
         }
 
         .creator-photo img {
@@ -453,12 +463,13 @@
 
         .approach {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: minmax(260px, .8fr) minmax(0, 1.55fr);
             gap: 46px;
             align-items: center;
-            padding: 34px;
+            padding: 42px;
             border-radius: 8px;
-            background: linear-gradient(100deg, #edf7ff, #f8fbff 48%, #eaf3ff);
+            background: linear-gradient(100deg, #f2f8ff, #fff 46%, #edf6ff);
+            box-shadow: inset 0 0 0 1px #e5eef8;
         }
 
         .check-list {
@@ -479,12 +490,12 @@
         .process {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 18px;
         }
 
         .process-card {
             min-height: 212px;
-            padding: 30px 24px;
+            padding: 28px 22px;
             border: 1px solid #e1e8f0;
             border-radius: 8px;
             background: #fff;
@@ -528,13 +539,13 @@
 
         .social-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
             gap: 16px;
         }
 
         .social-card {
             display: flex;
-            min-height: 64px;
+            min-height: 78px;
             align-items: center;
             gap: 14px;
             border: 1px solid #e1e8f0;
@@ -557,11 +568,11 @@
 
         .journey {
             display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 34px;
+            grid-template-columns: minmax(240px, .55fr) minmax(0, 1.45fr);
+            gap: 42px;
             align-items: center;
-            margin-top: 28px;
-            padding: 28px;
+            margin-top: 32px;
+            padding: 34px;
             border-radius: 8px;
             background: #fff;
             box-shadow: 0 16px 38px rgba(15, 23, 42, .06);
@@ -569,12 +580,13 @@
 
         .timeline {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+            gap: 20px;
         }
 
         .time-item {
             border-left: 1px solid #dbe4ee;
+            min-height: 188px;
             padding-left: 18px;
         }
 
@@ -587,6 +599,7 @@
         .time-item p {
             color: var(--muted);
             font-size: 13px;
+            line-height: 1.6;
         }
 
         .quote-strip,
@@ -3031,10 +3044,127 @@
             opacity: 0.85;
         }
 
+        body.dark-mode .section-title,
+        body.dark-mode .center-head h2,
+        body.dark-mode .mini-card b,
+        body.dark-mode .process-card h3,
+        body.dark-mode .social-card b,
+        body.dark-mode .time-item b {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .copy,
+        body.dark-mode .mini-card p,
+        body.dark-mode .process-card p,
+        body.dark-mode .social-card span,
+        body.dark-mode .time-item p,
+        body.dark-mode .check-list {
+            color: #a8b4c7;
+        }
+
+        body.dark-mode .mini-card,
+        body.dark-mode .process-card,
+        body.dark-mode .social-card,
+        body.dark-mode .journey {
+            border-color: rgba(255, 255, 255, .10);
+            background: #0d1b2a;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .28);
+        }
+
+        body.dark-mode .approach {
+            background: linear-gradient(100deg, #0d1b2a, #111f30 46%, #0f2530);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .10);
+        }
+
+        body.dark-mode .round-icon {
+            border-color: rgba(255, 255, 255, .14);
+            background: #111f30;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+        }
+
+        body.dark-mode .time-item {
+            border-left-color: rgba(255, 255, 255, .16);
+        }
+
+        body.dark-mode .community-tab {
+            color: #a8b4c7;
+        }
+
+        body.dark-mode .community-tab.active {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .panel,
+        body.dark-mode .category-card {
+            border-color: rgba(255, 255, 255, .10);
+            background: #0d1b2a;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .28);
+        }
+
+        body.dark-mode .panel-head,
+        body.dark-mode .post,
+        body.dark-mode .event-item {
+            border-color: rgba(255, 255, 255, .10);
+        }
+
+        body.dark-mode .panel-head h2,
+        body.dark-mode .post-meta b,
+        body.dark-mode .post h3,
+        body.dark-mode .share-box strong,
+        body.dark-mode .spotlight b,
+        body.dark-mode .mini-stats b,
+        body.dark-mode .event-item b,
+        body.dark-mode .category-card h3 {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .panel-head p,
+        body.dark-mode .post-meta,
+        body.dark-mode .post p,
+        body.dark-mode .post-actions,
+        body.dark-mode .mini-stats span,
+        body.dark-mode .event-item p,
+        body.dark-mode .guidelines li,
+        body.dark-mode .category-card p {
+            color: #a8b4c7;
+        }
+
+        body.dark-mode .share-box {
+            background: linear-gradient(100deg, #111f30, #0d1b2a);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+        }
+
+        body.dark-mode .avatar-img::after {
+            border-color: #0d1b2a;
+        }
+
+        body.dark-mode .online-row .avatar-img {
+            border-color: #0d1b2a;
+        }
+
+        body.dark-mode .community-nav .btn-dark,
+        body.dark-mode .share-box .btn-dark {
+            border-color: rgba(255, 255, 255, .14);
+            background: #111f30 !important;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .category-row .btn-dark {
+            border-color: rgba(255, 255, 255, .14) !important;
+            background: #111f30 !important;
+            color: #f8fafc !important;
+        }
+
     </style>
 </head>
 
-<body>
+<body class="dark-mode">
+    @php
+        $settings = $systemSettings ?? null;
+        $brandName = $settings?->site_name ?: 'Life Decode';
+        $brandHighlight = $settings?->site_name_highlight ?: 'Decode';
+        $brandPrefix = trim(str_ireplace($brandHighlight, '', $brandName)) ?: 'Life';
+    @endphp
     <header class="site-header">
         <div class="shell nav">
             <a class="brand" href="/">
@@ -3046,8 +3176,8 @@
                     </svg>
                 </span>
                 <span>
-                    <strong>LIFE <span>DECODE</span></strong>
-                    <small>Decode life. Live amplified.</small>
+                    <strong>{{ strtoupper($brandPrefix) }} <span>{{ strtoupper($brandHighlight) }}</span></strong>
+                    <small>{{ $settings?->tagline ?: 'Decode life. Live amplified.' }}</small>
                 </span>
             </a>
 
@@ -3066,23 +3196,27 @@
             </nav>
 
             <div class="nav-actions">
-                <button class="icon-btn" type="button" aria-label="Search">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                        <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                </button>
+                @if ($settings?->show_header_search ?? true)
+                    <button class="icon-btn" type="button" aria-label="Search">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                @endif
                 <button class="theme-toggle" type="button" aria-label="Toggle theme">
                     <svg class="sun-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.7-5.7 1.4-1.4M4.9 19.1l1.4-1.4m0-11.4L4.9 4.9m14.2 14.2-1.4-1.4M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </button>
-                <a class="btn btn-primary" href="{{ route('life-decode.tools') }}">The Mental Toolkit
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </a>
+                @if ($settings?->show_header_cta ?? true)
+                    <a class="btn btn-primary" href="{{ $settings?->header_cta_url ?: route('life-decode.tools') }}">{{ $settings?->header_cta_text ?: 'The Mental Toolkit' }}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                @endif
                 <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-navigation"
                     aria-expanded="false" data-menu-toggle>
                     <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
@@ -3111,18 +3245,20 @@
 
     @yield('content')
 
-    <section class="section" style="padding-bottom:0;">
-        <div class="shell newsletter">
-            <div>
-                <h3>Get weekly insights to decode life</h3>
-                <p>and live it with more clarity.</p>
+    @if ($settings?->show_newsletter ?? true)
+        <section class="section" style="padding-bottom:0;">
+            <div class="shell newsletter">
+                <div>
+                    <h3>{{ $settings?->newsletter_title ?: 'Get weekly insights to decode life' }}</h3>
+                    <p>{{ $settings?->newsletter_subtitle ?: 'and live it with more clarity.' }}</p>
+                </div>
+                <form class="email-row">
+                    <input type="email" placeholder="{{ $settings?->newsletter_placeholder ?: 'Enter your email' }}" aria-label="Newsletter email">
+                    <button class="btn btn-primary" type="button">{{ $settings?->newsletter_button_text ?: 'Subscribe' }}</button>
+                </form>
             </div>
-            <form class="email-row">
-                <input type="email" placeholder="Enter your email" aria-label="Newsletter email">
-                <button class="btn btn-primary" type="button">Subscribe</button>
-            </form>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <footer class="site-footer">
         <div class="shell footer-grid">
@@ -3137,12 +3273,11 @@
                         </svg>
                     </span>
                     <span>
-                        <strong>LIFE <span>DECODE</span></strong>
-                        <small>Decode life. Live amplified.</small>
+                        <strong>{{ strtoupper($brandPrefix) }} <span>{{ strtoupper($brandHighlight) }}</span></strong>
+                        <small>{{ $settings?->tagline ?: 'Decode life. Live amplified.' }}</small>
                     </span>
                 </a>
-                <p style="margin-top:18px;">A knowledge hub for understanding psychology, behavior, and life systems to
-                    help you think clearly and live intentionally.</p>
+                <p style="margin-top:18px;">{{ $settings?->footer_description ?: 'A knowledge hub for understanding psychology, behavior, and life systems to help you think clearly and live intentionally.' }}</p>
             </div>
             <div>
                 <h4>Explore</h4><a href="/">Home</a><a href="{{ route('life-decode.library') }}">Library</a><a
@@ -3160,8 +3295,7 @@
                 <h4>Company</h4><a href="{{ route('life-decode.about') }}">About</a><a href="#">Contact</a><a
                     href="#">Work With Me</a>
             </div>
-            <div class="footer-quote"><span class="gold">"</span><br>The more you understand, the more freedom you
-                gain.<br><small>- Life Decode</small></div>
+            <div class="footer-quote"><span class="gold">"</span><br>{{ $settings?->footer_quote_text ?: 'The more you understand, the more freedom you gain.' }}<br><small>- {{ $settings?->footer_quote_author ?: 'Life Decode' }}</small></div>
         </div>
     </footer>
     <script>
@@ -3190,7 +3324,7 @@
 
             // Restore saved theme on every page load
             const savedTheme = localStorage.getItem('ld-theme');
-            applyTheme(savedTheme === 'dark');
+            applyTheme(savedTheme !== 'light');
 
             if (themeToggleBtn) {
                 themeToggleBtn.addEventListener('click', () => {
@@ -3199,6 +3333,7 @@
                     applyTheme(nowDark);
                 });
             }
+
         })();
     </script>
 </body>

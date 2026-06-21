@@ -11,12 +11,16 @@ use Illuminate\View\View;
 
 class HomePageController extends Controller
 {
-    public function edit(): View
+    public function edit(string $section = 'hero'): View
     {
+        abort_unless(array_key_exists($section, $this->sections()), 404);
+
         $homePage = $this->homePage();
         $slides = HomeVideoSlide::orderBy('sort_order')->latest()->get();
+        $sections = $this->sections();
+        $activeSection = $section;
 
-        return view('dashboard.home-page', compact('homePage', 'slides'));
+        return view('dashboard.home-page', compact('homePage', 'slides', 'sections', 'activeSection'));
     }
 
     public function update(Request $request)
@@ -30,7 +34,6 @@ class HomePageController extends Controller
             'primary_button_url' => ['required', 'string', 'max:255'],
             'secondary_button_text' => ['required', 'string', 'max:255'],
             'secondary_button_url' => ['required', 'string', 'max:255'],
-            'community_text' => ['required', 'string', 'max:255'],
         ]);
 
         $this->homePage()->update($data);
@@ -84,6 +87,17 @@ class HomePageController extends Controller
         return HomePage::firstOrCreate([], [
             'description' => 'Explore the psychology, systems and thinking models that shape your behavior, decisions and reality.',
         ]);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function sections(): array
+    {
+        return [
+            'hero' => 'Hero',
+            'video-slider' => 'Video Slider',
+        ];
     }
 
     /**

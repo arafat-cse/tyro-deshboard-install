@@ -118,6 +118,14 @@
 
     $visiblePageFields = $sectionFields[$activeSection];
     $activeGroup = $groups[$activeSection] ?? null;
+    $canAboutSection = fn (string $section, string|array $actions = ['view', 'create', 'edit', 'delete']): bool => \App\Support\DashboardAccess::canGroup(
+        auth()->user(),
+        \App\Support\DashboardAccess::aboutSectionGroup($section),
+        $actions
+    );
+    $canEditActive = $canAboutSection($activeSection, 'edit');
+    $canCreateActive = $canAboutSection($activeSection, 'create');
+    $canDeleteActive = $canAboutSection($activeSection, 'delete');
 @endphp
 
 @section('title', $sections[$activeSection])
@@ -366,6 +374,7 @@
 
     <div class="about-section-tabs">
         @foreach ($sections as $sectionKey => $sectionLabel)
+            @continue(! $canAboutSection($sectionKey))
             <a class="{{ $activeSection === $sectionKey ? 'active' : '' }}" href="{{ route('dashboard.about-management.edit', $sectionKey) }}">{{ $sectionLabel }}</a>
         @endforeach
     </div>
@@ -388,6 +397,7 @@
             <form method="POST" action="{{ route('dashboard.about-page.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="_section" value="{{ $activeSection }}">
 
                 @foreach ($pageFields as $name => $label)
                     @if (! in_array($name, $visiblePageFields, true))
@@ -404,19 +414,21 @@
                                 <div class="cms-image-preview">
                                     <img src="{{ $name === 'hero_image_path' ? $aboutPage->heroImageUrl() : $aboutPage->creatorImageUrl() }}" alt="{{ $pageFields[$name] }}">
                                 </div>
-                                <input id="{{ $imageFields[$name]['input'] }}" name="{{ $imageFields[$name]['input'] }}" type="file" accept="image/*">
+                                <input id="{{ $imageFields[$name]['input'] }}" name="{{ $imageFields[$name]['input'] }}" type="file" accept="image/*" @disabled(! $canEditActive)>
                             @elseif (in_array($name, $longFields, true))
-                                <textarea id="{{ $name }}" name="{{ $name }}" required>{{ old($name, $aboutPage->{$name}) }}</textarea>
+                                <textarea id="{{ $name }}" name="{{ $name }}" required @disabled(! $canEditActive)>{{ old($name, $aboutPage->{$name}) }}</textarea>
                             @else
-                                <input id="{{ $name }}" name="{{ $name }}" value="{{ old($name, $aboutPage->{$name}) }}" required>
+                                <input id="{{ $name }}" name="{{ $name }}" value="{{ old($name, $aboutPage->{$name}) }}" required @disabled(! $canEditActive)>
                             @endif
                         </div>
                     @endforeach
                 </div>
 
+                @if($canEditActive)
                 <div class="cms-actions">
                     <button type="submit" class="btn btn-primary">Save {{ $sections[$activeSection] }}</button>
                 </div>
+                @endif
             </form>
         </div>
     </div>
@@ -428,6 +440,7 @@
                 <p class="muted-text">{{ $activeGroup['description'] }}</p>
             </div>
             <div class="card-body">
+                @if($canCreateActive)
                 <div class="about-row" style="margin-bottom:.75rem;">
                     <div class="about-row-main">
                         <div class="about-row-title">
@@ -459,6 +472,7 @@
                         </form>
                     </div>
                 </div>
+                @endif
 
                 <div class="about-list">
                     @forelse ($activeGroup['items'] as $item)
@@ -471,9 +485,12 @@
                                 <span class="pill">{{ $item->sort_order }}</span>
                                 <span class="pill {{ $item->is_published ? 'success' : '' }}">{{ $item->is_published ? 'Published' : 'Draft' }}</span>
                                 <div class="row-actions">
+                                    @if($canEditActive)
                                     <a href="#item-edit-{{ $item->id }}" class="icon-action primary" title="Edit item" aria-label="Edit item">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" /></svg>
                                     </a>
+                                    @endif
+                                    @if($canDeleteActive)
                                     <form id="delete-item-{{ $item->id }}" method="POST" action="{{ route($activeGroup['destroy'], $item) }}">
                                         @csrf
                                         @method('DELETE')
@@ -481,9 +498,11 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 11v6M14 11v6" /></svg>
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </div>
 
+                            @if($canEditActive)
                             <div class="about-panel" id="item-edit-{{ $item->id }}">
                                 <form method="POST" action="{{ route($activeGroup['route'], $item) }}">
                                     @csrf
@@ -501,6 +520,7 @@
                                     </div>
                                 </form>
                             </div>
+                            @endif
                         </div>
                     @empty
                         <p class="muted-text">No items yet.</p>

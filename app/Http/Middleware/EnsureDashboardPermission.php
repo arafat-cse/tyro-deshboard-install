@@ -20,10 +20,13 @@ class EnsureDashboardPermission
             return $next($request);
         }
 
-        $permission = DashboardAccess::routePermission($request->route()?->getName());
+        $permission = DashboardAccess::routePermission($request);
 
         if (! $permission && $request->route()?->hasParameter('resource')) {
-            $permission = DashboardAccess::resourcePermission($request->route('resource'));
+            $permission = DashboardAccess::resourcePermission(
+                $request->route('resource'),
+                DashboardAccess::actionFromRoute($request->route()?->getName(), $request->method())
+            );
         }
 
         abort_unless(DashboardAccess::can($user, $permission), 403);

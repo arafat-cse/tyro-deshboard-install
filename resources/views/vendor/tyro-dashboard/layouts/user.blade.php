@@ -21,7 +21,7 @@
     @include('tyro-dashboard::partials.admin-bar')
     <div class="dashboard-layout">
         <!-- Sidebar -->
-        @if(($isAdmin ?? false) || \App\Support\DashboardAccess::canAny(auth()->user(), config('dashboard-permissions.sidebar_permissions', [])))
+        @if(($isAdmin ?? false) || \App\Support\DashboardAccess::canAny(auth()->user(), \App\Support\DashboardAccess::sidebarPermissions()))
             @include('tyro-dashboard::partials.admin-sidebar')
         @else
             @include('tyro-dashboard::partials.user-sidebar')

@@ -7,6 +7,26 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+function userWithDashboardPrivileges(array $privilegeSlugs): User
+{
+    $role = Role::create([
+        'name' => 'Scoped Manager',
+        'slug' => 'scoped-manager-'.str()->random(6),
+    ]);
+
+    foreach ($privilegeSlugs as $slug) {
+        $role->attachPrivilege(Privilege::create([
+            'name' => str($slug)->replace(['.', '-'], ' ')->title()->toString(),
+            'slug' => $slug,
+        ]));
+    }
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
 test('regular dashboard users do not see admin only resource links', function () {
     $user = User::factory()->create();
 
@@ -117,4 +137,61 @@ test('permissioned non admin users see the permission based dashboard sidebar', 
         ->assertSee('Blog Posts')
         ->assertDontSee(route('tyro-dashboard.users.index'), false)
         ->assertDontSee(route('tyro-dashboard.roles.index'), false);
+});
+
+test('about sections can be granted as view only privileges', function () {
+    $user = userWithDashboardPrivileges(['about.hero.view']);
+
+    $this->actingAs($user)
+        ->get('/dashboard/about-management/about-hero')
+        ->assertSuccessful()
+        ->assertSee('About Hero')
+        ->assertSee('About Management')
+        ->assertDontSee('Our Mission');
+
+    $this->actingAs($user)
+        ->get('/dashboard/about-management/our-mission')
+        ->assertForbidden();
+
+    $this->actingAs($user)
+        ->put('/dashboard/about-page', ['_section' => 'about-hero'])
+        ->assertForbidden();
+});
+
+test('resource create access is separate from resource view access', function () {
+    $user = userWithDashboardPrivileges(['library.view']);
+
+    $this->actingAs($user)
+        ->get('/dashboard/resources/library-items')
+        ->assertSuccessful()
+        ->assertSee('Library Items');
+
+    $this->actingAs($user)
+        ->get('/dashboard/resources/library-items/create')
+        ->assertForbidden();
+});
+
+test('role form renders grouped action privileges', function () {
+    foreach (['about.hero.view', 'about.hero.create', 'about.hero.edit', 'about.hero.delete'] as $slug) {
+        Privilege::create([
+            'name' => str($slug)->replace(['.', '-'], ' ')->title()->toString(),
+            'slug' => $slug,
+        ]);
+    }
+
+    $role = Role::create([
+        'name' => 'Super Admin',
+        'slug' => 'super-admin',
+    ]);
+    $user = User::factory()->create();
+    $user->assignRole($role);
+
+    $this->actingAs($user)
+        ->get('/dashboard/roles/create')
+        ->assertSuccessful()
+        ->assertSee('About: Hero')
+        ->assertSee('about.hero.view')
+        ->assertSee('about.hero.create')
+        ->assertSee('about.hero.edit')
+        ->assertSee('about.hero.delete');
 });

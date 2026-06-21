@@ -67,17 +67,9 @@
             <div class="form-group">
                 <label class="form-label">Assign Privileges</label>
                 @if($privileges->count())
-                <div class="checkbox-list">
-                    @foreach($privileges as $privilege)
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="privileges[]" value="{{ $privilege->id }}" class="checkbox-input" {{ in_array($privilege->id, old('privileges', $role->privileges->pluck('id')->toArray())) ? 'checked' : '' }}>
-                        <div class="checkbox-item-content">
-                            <div class="checkbox-item-title">{{ $privilege->name }}</div>
-                            <div class="checkbox-item-description">{{ $privilege->slug }}</div>
-                        </div>
-                    </label>
-                    @endforeach
-                </div>
+                @include('tyro-dashboard::roles.partials.privilege-groups', [
+                    'selectedPrivilegeIds' => old('privileges', $role->privileges->pluck('id')->toArray()),
+                ])
                 @else
                 <div class="alert alert-info">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -86,7 +86,7 @@
             // Filter resources to only those user can access
             $accessibleResources = [];
             foreach ($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource) {
-                $canAccess = \App\Support\DashboardAccess::can(auth()->user(), $resource['permission'] ?? \App\Support\DashboardAccess::resourcePermission($key));
+                $canAccess = \App\Support\DashboardAccess::can(auth()->user(), \App\Support\DashboardAccess::resourcePermission($key, ['view', 'create', 'edit', 'delete']));
                 if ($canAccess) {
                     $accessibleResources[$key] = $resource;
                 }

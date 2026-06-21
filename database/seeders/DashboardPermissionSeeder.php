@@ -12,7 +12,7 @@ class DashboardPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (config('dashboard-permissions.permissions', []) as $slug => $permission) {
+        foreach (config('dashboard-permissions.legacy_permissions', []) as $slug => $permission) {
             Privilege::updateOrCreate(
                 ['slug' => $slug],
                 [
@@ -20,6 +20,18 @@ class DashboardPermissionSeeder extends Seeder
                     'description' => $permission['description'],
                 ]
             );
+        }
+
+        foreach (config('dashboard-permissions.groups', []) as $group => $config) {
+            foreach ($config['actions'] as $action => $label) {
+                Privilege::updateOrCreate(
+                    ['slug' => "{$group}.{$action}"],
+                    [
+                        'name' => "{$config['name']}: {$label}",
+                        'description' => "{$label} access for {$config['name']}.",
+                    ]
+                );
+            }
         }
     }
 }

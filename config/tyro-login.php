@@ -89,7 +89,7 @@ return [
     'branding' => [
         // Your application name shown on all auth pages
         // Defaults to APP_NAME from Laravel config, or 'Laravel' if not set
-        'app_name' => env('TYRO_LOGIN_APP_NAME', env('APP_NAME', 'Laravel')),
+        'app_name' => env('TYRO_LOGIN_APP_NAME', env('APP_NAME', 'Life Decode')),
 
         // Logo URL (recommended: SVG or high-res PNG)
         // Set to null to use text-based logo with app name

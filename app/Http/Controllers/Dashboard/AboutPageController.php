@@ -11,6 +11,8 @@ use App\Models\AboutPage;
 use App\Models\AboutSocialLink;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -35,7 +37,20 @@ class AboutPageController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $this->aboutPage()->update($this->validatedPage($request));
+        $aboutPage = $this->aboutPage();
+        $data = $this->validatedPage($request);
+
+        if ($heroImagePath = $this->storeFile($request, 'hero_image', 'about/hero')) {
+            $this->deleteFile($aboutPage->hero_image_path);
+            $data['hero_image_path'] = $heroImagePath;
+        }
+
+        if ($creatorImagePath = $this->storeFile($request, 'creator_image', 'about/creator')) {
+            $this->deleteFile($aboutPage->creator_image_path);
+            $data['creator_image_path'] = $creatorImagePath;
+        }
+
+        $aboutPage->update($data);
 
         return back()->with('success', 'About page content updated.');
     }
@@ -204,12 +219,13 @@ class AboutPageController extends Controller
      */
     private function validatedPage(Request $request): array
     {
-        return $request->validate([
+        return Arr::except($request->validate([
             'eyebrow' => ['required', 'string', 'max:255'],
             'title_line_one' => ['required', 'string', 'max:255'],
             'title_line_two' => ['required', 'string', 'max:255'],
             'hero_description' => ['required', 'string'],
             'hero_image_path' => ['required', 'string', 'max:255'],
+            'hero_image' => ['nullable', 'image', 'max:5120'],
             'mission_title' => ['required', 'string', 'max:255'],
             'mission_description' => ['required', 'string'],
             'creator_title' => ['required', 'string', 'max:255'],
@@ -219,6 +235,7 @@ class AboutPageController extends Controller
             'creator_signature' => ['required', 'string', 'max:255'],
             'creator_role' => ['required', 'string', 'max:255'],
             'creator_image_path' => ['required', 'string', 'max:255'],
+            'creator_image' => ['nullable', 'image', 'max:5120'],
             'credentials_title' => ['required', 'string', 'max:255'],
             'credentials_description' => ['required', 'string'],
             'social_title' => ['required', 'string', 'max:255'],
@@ -228,7 +245,7 @@ class AboutPageController extends Controller
             'journey_button_url' => ['required', 'string', 'max:255'],
             'quote_text' => ['required', 'string', 'max:255'],
             'quote_author' => ['required', 'string', 'max:255'],
-        ]);
+        ]), ['hero_image', 'creator_image']);
     }
 
     /**
@@ -306,5 +323,23 @@ class AboutPageController extends Controller
     private function withPublished(array $data, Request $request): array
     {
         return $data + ['is_published' => $request->boolean('is_published')];
+    }
+
+    private function storeFile(Request $request, string $key, string $directory): ?string
+    {
+        if (! $request->hasFile($key)) {
+            return null;
+        }
+
+        return $request->file($key)->store($directory, 'public');
+    }
+
+    private function deleteFile(?string $path): void
+    {
+        if (! $path || str_starts_with($path, '/') || str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return;
+        }
+
+        Storage::disk('public')->delete($path);
     }
 }

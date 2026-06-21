@@ -137,8 +137,8 @@ it('syncs user from API', function () {
 
     Http::fake([
         'api.example.com/users/1' => Http::response([
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
+            'name' => 'Name',
+            'email' => 'example@gmail.com',
         ]),
     ]);
 

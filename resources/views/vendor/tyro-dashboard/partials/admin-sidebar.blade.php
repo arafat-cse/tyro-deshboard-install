@@ -1,3 +1,7 @@
+@php
+    $canDashboard = fn (string|array $permission): bool => \App\Support\DashboardAccess::can(auth()->user(), $permission);
+@endphp
+
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <a href="{{ route($dashboardRoute::name('index')) }}" class="sidebar-logo">
@@ -74,45 +78,58 @@
             @endif
         </div>
 
-        <!-- Admin Menu -->
+        @if($canDashboard(['manage-users', 'manage-roles', 'manage-privileges', 'manage-adminplan', 'manage-system-settings', 'manage-tools-page', 'manage-invitations', 'view-audit-logs']))
         <div class="sidebar-section">
             <div class="sidebar-section-title">Administration</div>
+            @if($canDashboard('manage-users'))
             <a href="{{ route($dashboardRoute::name('users.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('users.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 Users
             </a>
+            @endif
+            @if($canDashboard('manage-roles'))
             <a href="{{ route($dashboardRoute::name('roles.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('roles.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
                 Roles
             </a>
+            @endif
+            @if($canDashboard('manage-privileges'))
             <a href="{{ route($dashboardRoute::name('privileges.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('privileges.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                 </svg>
                 Privileges
-            </a>            <a href="{{ route('dashboard.adminplan') }}" class="sidebar-link {{ request()->routeIs('dashboard.adminplan') ? 'active' : '' }}">
+            </a>
+            @endif
+            @if($canDashboard('manage-adminplan'))
+            <a href="{{ route('dashboard.adminplan') }}" class="sidebar-link {{ request()->routeIs('dashboard.adminplan') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Adminplan
             </a>
+            @endif
+            @if($canDashboard('manage-system-settings'))
             <a href="{{ route('dashboard.system-settings') }}" class="sidebar-link {{ request()->routeIs('dashboard.system-settings') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 System Settings
             </a>
+            @endif
+            @if($canDashboard('manage-tools-page'))
             <a href="{{ route('dashboard.tools-page.edit') }}" class="sidebar-link {{ request()->routeIs('dashboard.tools-page.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
                 </svg>
                 Tools Page
             </a>
-            @if(config('tyro-dashboard.features.invitation_system', true))
+            @endif
+            @if(config('tyro-dashboard.features.invitation_system', true) && $canDashboard('manage-invitations'))
             <a href="{{ route($dashboardRoute::name('invitations.admin.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('invitations.admin.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -132,7 +149,7 @@
                 }
             @endphp
 
-            @if($showAuditLogsMenu)
+            @if($showAuditLogsMenu && $canDashboard('view-audit-logs'))
             <a href="{{ route($dashboardRoute::name('audits.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('audits.*')) ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -158,9 +175,12 @@
 
 
         </div>
+        @endif
 
+        @if($canDashboard(['manage-home-page', 'manage-about-page', 'manage-tools-page', 'manage-library', 'manage-blog']))
         <div class="sidebar-section">
             <div class="sidebar-section-title">Resources</div>
+            @if($canDashboard('manage-home-page'))
             <details class="sidebar-nested-group" {{ request()->routeIs('dashboard.home-management.*') ? 'open' : '' }}>
                 <summary class="sidebar-nested-summary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -182,7 +202,9 @@
                     @endforeach
                 </div>
             </details>
+            @endif
 
+            @if($canDashboard('manage-about-page'))
             <details class="sidebar-nested-group" {{ request()->routeIs('dashboard.about-management.*') ? 'open' : '' }}>
                 <summary class="sidebar-nested-summary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -209,7 +231,9 @@
                     @endforeach
                 </div>
             </details>
+            @endif
 
+            @if($canDashboard('manage-tools-page'))
             <details class="sidebar-nested-group" {{ request()->is('*/resources/tool-items*') || request()->is('*/resources/tool-sections*') ? 'open' : '' }}>
                 <summary class="sidebar-nested-summary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -232,37 +256,14 @@
                     </a>
                 </div>
             </details>
+            @endif
 
             @if(!empty($allResources ?? config('tyro-dashboard.resources')))
             @foreach($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource)
                 @continue(in_array($key, ['tool-sections', 'tool-items'], true))
 
                 @php
-                    // Check access (logic duplicated from Controller for view)
-                    $canAccess = true;
-                    if (isset($resource['roles']) && !empty($resource['roles'])) {
-                        $canAccess = false;
-                        $user = auth()->user();
-                        if ($user && method_exists($user, 'tyroRoleSlugs')) {
-                            $userRoles = $user->tyroRoleSlugs();
-                            // Check allowed roles
-                            foreach ($resource['roles'] as $role) {
-                                if (in_array($role, $userRoles)) {
-                                    $canAccess = true;
-                                    break;
-                                }
-                            }
-                            // Check readonly roles (if not already allowed)
-                            if (!$canAccess && isset($resource['readonly']) && !empty($resource['readonly'])) {
-                                foreach ($resource['readonly'] as $role) {
-                                    if (in_array($role, $userRoles)) {
-                                        $canAccess = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $canAccess = \App\Support\DashboardAccess::can(auth()->user(), $resource['permission'] ?? \App\Support\DashboardAccess::resourcePermission($key));
                 @endphp
                 
                 @if($canAccess)
@@ -280,6 +281,7 @@
             @endforeach
             @endif
         </div>
+        @endif
 
         @if(!config('tyro-dashboard.disable_examples', false) && !app()->environment('production'))
         <div class="sidebar-section">

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AboutPage extends Model
 {
@@ -56,5 +58,28 @@ class AboutPage extends Model
     public function journeyItems(): HasMany
     {
         return $this->hasMany(AboutJourneyItem::class)->orderBy('sort_order');
+    }
+
+    public function heroImageUrl(): string
+    {
+        return $this->imageUrl($this->hero_image_path);
+    }
+
+    public function creatorImageUrl(): string
+    {
+        return $this->imageUrl($this->creator_image_path);
+    }
+
+    private function imageUrl(?string $path): string
+    {
+        if (! $path) {
+            return '';
+        }
+
+        if (Str::startsWith($path, ['http://', 'https://', '/'])) {
+            return $path;
+        }
+
+        return Storage::disk('public')->url($path);
     }
 }

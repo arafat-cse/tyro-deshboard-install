@@ -33,7 +33,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" class="form-input @error('name') is-invalid @enderror" value="{{ old('name') }}" required placeholder="John Doe">
+                    <input type="text" id="name" name="name" class="form-input @error('name') is-invalid @enderror" value="{{ old('name') }}" required placeholder="Name">
                     @error('name')
                         <span class="form-error">{{ $message }}</span>
                     @enderror
@@ -41,7 +41,7 @@
 
                 <div class="form-group">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}" required placeholder="john@example.com">
+                    <input type="email" id="email" name="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}" required placeholder="example@gmail.com">
                     @error('email')
                         <span class="form-error">{{ $message }}</span>
                     @enderror

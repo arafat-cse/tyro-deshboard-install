@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Support\DashboardAccess;
 use HasinHayder\TyroDashboard\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Request as RequestFacade;
 
 class TyroResourceController extends ResourceController
 {
+    protected function hasAccess($config)
+    {
+        if (DashboardAccess::can(auth()->user(), $config['permission'] ?? null)) {
+            return true;
+        }
+
+        return parent::hasAccess($config);
+    }
+
     public function index($resource)
     {
         $config = $this->getResourceConfig($resource);

@@ -37,6 +37,11 @@
         'journey_description',
     ];
 
+    $imageFields = [
+        'hero_image_path' => ['input' => 'hero_image', 'label' => 'Replace Hero Image'],
+        'creator_image_path' => ['input' => 'creator_image', 'label' => 'Replace Creator Image'],
+    ];
+
     $sectionFields = [
         'about-hero' => ['eyebrow', 'title_line_one', 'title_line_two', 'hero_description', 'hero_image_path'],
         'our-mission' => ['mission_title', 'mission_description'],
@@ -212,6 +217,21 @@
         resize: vertical;
     }
 
+    .cms-image-preview {
+        overflow: hidden;
+        width: min(100%, 280px);
+        aspect-ratio: 16 / 10;
+        border: 1px solid var(--border);
+        border-radius: .5rem;
+        background: rgba(148, 163, 184, .12);
+    }
+
+    .cms-image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
     .cms-check {
         display: flex;
         gap: .5rem;
@@ -365,7 +385,7 @@
             <h3 class="card-title" style="font-size:1.0625rem;">{{ $sections[$activeSection] }} Content</h3>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('dashboard.about-page.update') }}">
+            <form method="POST" action="{{ route('dashboard.about-page.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -379,7 +399,13 @@
                     @foreach ($visiblePageFields as $name)
                         <div class="cms-field {{ in_array($name, $longFields, true) ? 'full' : '' }}">
                             <label for="{{ $name }}">{{ $pageFields[$name] }}</label>
-                            @if (in_array($name, $longFields, true))
+                            @if (array_key_exists($name, $imageFields))
+                                <input type="hidden" name="{{ $name }}" value="{{ old($name, $aboutPage->{$name}) }}">
+                                <div class="cms-image-preview">
+                                    <img src="{{ $name === 'hero_image_path' ? $aboutPage->heroImageUrl() : $aboutPage->creatorImageUrl() }}" alt="{{ $pageFields[$name] }}">
+                                </div>
+                                <input id="{{ $imageFields[$name]['input'] }}" name="{{ $imageFields[$name]['input'] }}" type="file" accept="image/*">
+                            @elseif (in_array($name, $longFields, true))
                                 <textarea id="{{ $name }}" name="{{ $name }}" required>{{ old($name, $aboutPage->{$name}) }}</textarea>
                             @else
                                 <input id="{{ $name }}" name="{{ $name }}" value="{{ old($name, $aboutPage->{$name}) }}" required>

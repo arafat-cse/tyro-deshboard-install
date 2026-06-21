@@ -20,7 +20,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="about-hero-art" style="background-image:url('{{ $aboutPage->hero_image_path }}');" role="img" aria-label="Life Decode creator portrait"></div>
+                <div class="about-hero-art" style="background-image:url('{{ $aboutPage->heroImageUrl() }}');" role="img" aria-label="Life Decode creator portrait"></div>
             </div>
         </section>
 
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="creator-photo">
-                    <img src="{{ $aboutPage->creator_image_path }}" alt="{{ $aboutPage->creator_title }}">
+                    <img src="{{ $aboutPage->creatorImageUrl() }}" alt="{{ $aboutPage->creator_title }}">
                 </div>
             </div>
         </section>

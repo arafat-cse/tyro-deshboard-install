@@ -43,14 +43,20 @@ Route::get('/tools', [ToolController::class, 'index'])->name('life-decode.tools'
 Route::view('/community', 'life-decode.community')->name('life-decode.community');
 Route::get('/about', [AboutController::class, 'index'])->name('life-decode.about');
 
-Route::get('dashboard/system-settings', [SystemSettingsController::class, 'edit'])->middleware(['auth', 'tyro-dashboard.admin'])->name('dashboard.system-settings');
-Route::put('dashboard/system-settings', [SystemSettingsController::class, 'update'])->middleware(['auth', 'tyro-dashboard.admin'])->name('dashboard.system-settings.update');
+Route::get('dashboard/system-settings', [SystemSettingsController::class, 'edit'])->middleware(['auth', 'dashboard.permission'])->name('dashboard.system-settings');
+Route::put('dashboard/system-settings', [SystemSettingsController::class, 'update'])->middleware(['auth', 'dashboard.permission'])->name('dashboard.system-settings.update');
 
-Route::get('dashboard/resources/{resource}', [TyroResourceController::class, 'index'])
-    ->middleware(['web', 'auth'])
-    ->name('tyro-dashboard.resources.index');
+Route::middleware(['auth', 'dashboard.permission'])->prefix('dashboard/resources/{resource}')->name('tyro-dashboard.resources.')->group(function (): void {
+    Route::get('/', [TyroResourceController::class, 'index'])->name('index');
+    Route::get('/create', [TyroResourceController::class, 'create'])->name('create');
+    Route::post('/', [TyroResourceController::class, 'store'])->name('store');
+    Route::get('/{id}', [TyroResourceController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [TyroResourceController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [TyroResourceController::class, 'update'])->name('update');
+    Route::delete('/{id}', [TyroResourceController::class, 'destroy'])->name('destroy');
+});
 
-Route::middleware(['auth', 'tyro-dashboard.admin'])->prefix('dashboard')->name('dashboard.')->group(function (): void {
+Route::middleware(['auth', 'dashboard.permission'])->prefix('dashboard')->name('dashboard.')->group(function (): void {
     Route::redirect('home-page', '/dashboard/home-management/hero')->name('home-page.edit');
     Route::get('home-management/{section}', [HomePageController::class, 'edit'])->name('home-management.edit');
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');
@@ -87,4 +93,4 @@ Route::middleware(['auth', 'tyro-dashboard.admin'])->prefix('dashboard')->name('
     Route::delete('tools-page/items/{item}', [ToolsPageController::class, 'destroyItem'])->name('tools-page.items.destroy');
 });
 
-Route::view('dashboard/adminplan', 'dashboard.adminplan')->middleware(['auth', 'tyro-dashboard.admin'])->name('dashboard.adminplan');
+Route::view('dashboard/adminplan', 'dashboard.adminplan')->middleware(['auth', 'dashboard.permission'])->name('dashboard.adminplan');

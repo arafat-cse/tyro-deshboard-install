@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        $this->call(DashboardPermissionSeeder::class);
         $this->call(LibrarySeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(ToolsSeeder::class);

@@ -230,6 +230,7 @@ return [
             'title' => 'Tool Sections',
             'title_singular' => 'Tool Section',
             'permission' => 'manage-tools-page',
+            'permission_group' => 'tools',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h16" /></svg>',
             'fields' => [
                 'tool_page_id' => [
@@ -293,6 +294,7 @@ return [
             'title' => 'Tool Items',
             'title_singular' => 'Tool Item',
             'permission' => 'manage-tools-page',
+            'permission_group' => 'tools',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5h14v14H5zM9 9h6M9 13h6M9 17h3" /></svg>',
             'upload_disk' => 'public',
             'upload_directory' => 'tool-items',
@@ -403,6 +405,7 @@ return [
             'title' => 'Library Items',
             'title_singular' => 'Library Item',
             'permission' => 'manage-library',
+            'permission_group' => 'library',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path stroke-linecap="round" stroke-linejoin="round" d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" /></svg>',
             'upload_disk' => 'public',
             'upload_directory' => 'library',
@@ -526,6 +529,7 @@ return [
             'title' => 'Blog Posts',
             'title_singular' => 'Blog Post',
             'permission' => 'manage-blog',
+            'permission_group' => 'blog',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h8M8 10h8M8 14h5" /></svg>',
             'upload_disk' => 'public',
             'upload_directory' => 'blog',
@@ -636,6 +640,7 @@ return [
             'title' => 'Blog Categories',
             'title_singular' => 'Blog Category',
             'permission' => 'manage-blog',
+            'permission_group' => 'blog',
             'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg>',
             'fields' => [
                 'name' => [

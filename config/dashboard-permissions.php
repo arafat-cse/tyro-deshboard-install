@@ -1,92 +1,237 @@
 <?php
 
+$crudActions = [
+    'view' => 'View',
+    'create' => 'Create',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+];
+
 return [
-    'permissions' => [
+    'actions' => $crudActions,
+
+    'legacy_permissions' => [
         'manage-users' => [
             'name' => 'Manage Users',
-            'description' => 'Create, edit, suspend, impersonate, and delete dashboard users.',
+            'description' => 'Legacy full access to dashboard users.',
         ],
         'manage-roles' => [
             'name' => 'Manage Roles',
-            'description' => 'Create, edit, and assign roles.',
+            'description' => 'Legacy full access to dashboard roles.',
         ],
         'manage-privileges' => [
             'name' => 'Manage Privileges',
-            'description' => 'Create, edit, and attach privileges to roles.',
+            'description' => 'Legacy full access to dashboard privileges.',
         ],
         'manage-system-settings' => [
             'name' => 'Manage System Settings',
-            'description' => 'Update global site and branding settings.',
+            'description' => 'Legacy full access to system settings.',
         ],
         'manage-home-page' => [
             'name' => 'Manage Home Page',
-            'description' => 'Update home page hero content and video slides.',
+            'description' => 'Legacy full access to home page management.',
         ],
         'manage-about-page' => [
             'name' => 'Manage About Page',
-            'description' => 'Update about page content, metrics, and sections.',
+            'description' => 'Legacy full access to all about page sections.',
         ],
         'manage-tools-page' => [
             'name' => 'Manage Tools Page',
-            'description' => 'Update tools page content, sections, and tool items.',
+            'description' => 'Legacy full access to tools management.',
         ],
         'manage-library' => [
             'name' => 'Manage Library',
-            'description' => 'Create and update library content.',
+            'description' => 'Legacy full access to library content.',
         ],
         'manage-blog' => [
             'name' => 'Manage Blog',
-            'description' => 'Create and update blog posts and categories.',
+            'description' => 'Legacy full access to blog content.',
         ],
         'manage-invitations' => [
             'name' => 'Manage Invitations',
-            'description' => 'Manage invitation links and referrals.',
+            'description' => 'Legacy full access to invitation management.',
         ],
         'view-audit-logs' => [
             'name' => 'View Audit Logs',
-            'description' => 'View, export, and maintain audit logs.',
+            'description' => 'Legacy full access to audit logs.',
         ],
         'manage-adminplan' => [
             'name' => 'Manage Admin Plan',
-            'description' => 'View and update the admin plan page.',
+            'description' => 'Legacy full access to the admin plan page.',
         ],
     ],
 
-    'routes' => [
-        'tyro-dashboard.users.*' => 'manage-users',
-        'tyro-dashboard.roles.*' => 'manage-roles',
-        'tyro-dashboard.privileges.*' => 'manage-privileges',
-        'tyro-dashboard.invitations.admin.*' => 'manage-invitations',
-        'tyro-dashboard.audits.*' => 'view-audit-logs',
-        'dashboard.system-settings*' => 'manage-system-settings',
-        'dashboard.home-page.*' => 'manage-home-page',
-        'dashboard.home-management.*' => 'manage-home-page',
-        'dashboard.about-page.*' => 'manage-about-page',
-        'dashboard.about-management.*' => 'manage-about-page',
-        'dashboard.tools-page.*' => 'manage-tools-page',
-        'dashboard.adminplan' => 'manage-adminplan',
+    'groups' => [
+        'users' => [
+            'name' => 'Users',
+            'description' => 'User accounts, status, impersonation, and profile controls.',
+            'legacy' => ['manage-users'],
+            'actions' => $crudActions,
+        ],
+        'roles' => [
+            'name' => 'Roles',
+            'description' => 'Role creation and privilege assignment.',
+            'legacy' => ['manage-roles'],
+            'actions' => $crudActions,
+        ],
+        'privileges' => [
+            'name' => 'Privileges',
+            'description' => 'Privilege catalog management.',
+            'legacy' => ['manage-privileges'],
+            'actions' => $crudActions,
+        ],
+        'system-settings' => [
+            'name' => 'System Settings',
+            'description' => 'Global site settings and dashboard branding.',
+            'legacy' => ['manage-system-settings'],
+            'actions' => [
+                'view' => 'View',
+                'edit' => 'Edit',
+            ],
+        ],
+        'home' => [
+            'name' => 'Home Page',
+            'description' => 'Home page hero text and video slider.',
+            'legacy' => ['manage-home-page'],
+            'actions' => $crudActions,
+        ],
+        'about.hero' => [
+            'name' => 'About: Hero',
+            'description' => 'Hero text, hero image, and hero metrics.',
+            'legacy' => ['manage-about-page'],
+            'actions' => $crudActions,
+        ],
+        'about.mission' => [
+            'name' => 'About: Our Mission',
+            'description' => 'Mission title, description, and mission cards.',
+            'legacy' => ['manage-about-page'],
+            'actions' => $crudActions,
+        ],
+        'about.creator' => [
+            'name' => 'About: The Creator',
+            'description' => 'Creator copy and creator image.',
+            'legacy' => ['manage-about-page'],
+            'actions' => [
+                'view' => 'View',
+                'edit' => 'Edit',
+            ],
+        ],
+        'about.credentials' => [
+            'name' => 'About: Credentials',
+            'description' => 'Credentials copy, checklist rows, and process cards.',
+            'legacy' => ['manage-about-page'],
+            'actions' => $crudActions,
+        ],
+        'about.social' => [
+            'name' => 'About: Social Media',
+            'description' => 'Social heading and social platform links.',
+            'legacy' => ['manage-about-page'],
+            'actions' => $crudActions,
+        ],
+        'about.journey' => [
+            'name' => 'About: Our Journey',
+            'description' => 'Journey copy, CTA, quote, and timeline.',
+            'legacy' => ['manage-about-page'],
+            'actions' => $crudActions,
+        ],
+        'tools' => [
+            'name' => 'Tools',
+            'description' => 'Tools page, tool sections, and tool items.',
+            'legacy' => ['manage-tools-page'],
+            'actions' => $crudActions,
+        ],
+        'library' => [
+            'name' => 'Library',
+            'description' => 'Library videos, articles, and resources.',
+            'legacy' => ['manage-library'],
+            'actions' => $crudActions,
+        ],
+        'blog' => [
+            'name' => 'Blog',
+            'description' => 'Blog posts and blog categories.',
+            'legacy' => ['manage-blog'],
+            'actions' => $crudActions,
+        ],
+        'invitations' => [
+            'name' => 'Invitations',
+            'description' => 'Invitation links and referrals.',
+            'legacy' => ['manage-invitations'],
+            'actions' => $crudActions,
+        ],
+        'audits' => [
+            'name' => 'Audit Logs',
+            'description' => 'Audit log visibility, exports, and cleanup.',
+            'legacy' => ['view-audit-logs'],
+            'actions' => [
+                'view' => 'View',
+                'delete' => 'Delete',
+            ],
+        ],
+        'adminplan' => [
+            'name' => 'Admin Plan',
+            'description' => 'Admin plan page.',
+            'legacy' => ['manage-adminplan'],
+            'actions' => [
+                'view' => 'View',
+            ],
+        ],
+    ],
+
+    'route_groups' => [
+        'tyro-dashboard.users.*' => 'users',
+        'tyro-dashboard.roles.*' => 'roles',
+        'tyro-dashboard.privileges.*' => 'privileges',
+        'tyro-dashboard.invitations.admin.*' => 'invitations',
+        'tyro-dashboard.audits.*' => 'audits',
+        'dashboard.system-settings*' => 'system-settings',
+        'dashboard.home-page.*' => 'home',
+        'dashboard.home-management.*' => 'home',
+        'dashboard.tools-page.*' => 'tools',
+        'dashboard.adminplan' => 'adminplan',
     ],
 
     'resources' => [
-        'tool-sections' => 'manage-tools-page',
-        'tool-items' => 'manage-tools-page',
-        'library-items' => 'manage-library',
-        'blog-posts' => 'manage-blog',
-        'blog-categories' => 'manage-blog',
+        'tool-sections' => 'tools',
+        'tool-items' => 'tools',
+        'library-items' => 'library',
+        'blog-posts' => 'blog',
+        'blog-categories' => 'blog',
     ],
 
-    'sidebar_permissions' => [
-        'manage-users',
-        'manage-roles',
-        'manage-privileges',
-        'manage-system-settings',
-        'manage-home-page',
-        'manage-about-page',
-        'manage-tools-page',
-        'manage-library',
-        'manage-blog',
-        'manage-invitations',
-        'view-audit-logs',
-        'manage-adminplan',
+    'about_sections' => [
+        'about-hero' => 'about.hero',
+        'our-mission' => 'about.mission',
+        'the-creator' => 'about.creator',
+        'credentials-approach' => 'about.credentials',
+        'social-media' => 'about.social',
+        'our-journey' => 'about.journey',
+    ],
+
+    'about_item_routes' => [
+        'dashboard.about-page.metrics.*' => 'about.hero',
+        'dashboard.about-page.mission-items.*' => 'about.mission',
+        'dashboard.about-page.approach-items.*' => 'about.credentials',
+        'dashboard.about-page.social-links.*' => 'about.social',
+        'dashboard.about-page.journey-items.*' => 'about.journey',
+    ],
+
+    'sidebar_groups' => [
+        'users',
+        'roles',
+        'privileges',
+        'system-settings',
+        'home',
+        'about.hero',
+        'about.mission',
+        'about.creator',
+        'about.credentials',
+        'about.social',
+        'about.journey',
+        'tools',
+        'library',
+        'blog',
+        'invitations',
+        'audits',
+        'adminplan',
     ],
 ];

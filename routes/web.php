@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\AboutPageController;
 use App\Http\Controllers\Dashboard\HomePageController;
+use App\Http\Controllers\Dashboard\PrivilegeController;
 use App\Http\Controllers\Dashboard\SystemSettingsController;
 use App\Http\Controllers\Dashboard\ToolsPageController;
 use App\Http\Controllers\Dashboard\TyroResourceController;
@@ -45,6 +46,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('life-decode.about
 
 Route::get('dashboard/system-settings', [SystemSettingsController::class, 'edit'])->middleware(['auth', 'dashboard.permission'])->name('dashboard.system-settings');
 Route::put('dashboard/system-settings', [SystemSettingsController::class, 'update'])->middleware(['auth', 'dashboard.permission'])->name('dashboard.system-settings.update');
+Route::get('dashboard/privileges', [PrivilegeController::class, 'index'])->middleware(['auth', 'dashboard.permission'])->name('tyro-dashboard.privileges.index');
 
 Route::middleware(['auth', 'dashboard.permission'])->prefix('dashboard/resources/{resource}')->name('tyro-dashboard.resources.')->group(function (): void {
     Route::get('/', [TyroResourceController::class, 'index'])->name('index');

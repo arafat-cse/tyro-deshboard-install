@@ -10,6 +10,13 @@ class TyroResourceController extends ResourceController
 {
     protected function hasAccess($config)
     {
+        if (
+            isset($config['permission_group'])
+            && DashboardAccess::canGroup(auth()->user(), $config['permission_group'], ['view', 'create', 'edit', 'delete'])
+        ) {
+            return true;
+        }
+
         if (DashboardAccess::can(auth()->user(), $config['permission'] ?? null)) {
             return true;
         }

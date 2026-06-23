@@ -54,7 +54,7 @@
         }
 
         .shell {
-            width: min(1180px, calc(100% - 48px));
+            width: min(1628px, calc(100% - 96px));
             margin: 0 auto;
         }
 
@@ -2353,6 +2353,10 @@
         }
 
         @media (max-width: 1050px) {
+            .shell {
+                width: min(100% - 48px, 1180px);
+            }
+
             .nav-links {
                 display: none;
             }
@@ -2443,27 +2447,48 @@
         }
 
         @media (max-width: 680px) {
+            html,
+            body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
             .shell {
                 width: min(100% - 28px, 1180px);
             }
 
             .nav {
                 min-height: 66px;
+                gap: 10px;
+            }
+
+            .brand {
+                min-width: 0;
+                gap: 10px;
             }
 
             .brand strong {
                 font-size: 19px;
+                white-space: nowrap;
             }
 
             .brand small,
-            .icon-btn {
+            .icon-btn,
+            .theme-toggle,
+            .nav-actions .btn {
                 display: none;
             }
 
-            .nav-actions .btn {
-                min-height: 42px;
-                padding: 0 16px;
-                font-size: 13px;
+            .nav-actions {
+                flex: 0 0 auto;
+                gap: 8px;
+                margin-left: auto;
+            }
+
+            .menu-toggle {
+                display: grid;
+                width: 42px;
+                height: 42px;
             }
 
             .page-hero h1 {

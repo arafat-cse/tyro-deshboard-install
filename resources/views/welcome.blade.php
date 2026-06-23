@@ -51,7 +51,7 @@
         }
 
         .shell {
-            width: min(1180px, calc(100% - 48px));
+            width: min(1628px, calc(100% - 96px));
             margin: 0 auto;
         }
 
@@ -268,11 +268,11 @@
 
         .hero {
             display: grid;
-            grid-template-columns: .98fr 1.1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(520px, 1.06fr);
             align-items: center;
-            min-height: 620px;
-            gap: 56px;
-            padding: 62px 0 28px;
+            min-height: 660px;
+            gap: 72px;
+            padding: 72px 0 34px;
         }
 
         .eyebrow {
@@ -285,18 +285,18 @@
         }
 
         .hero h1 {
-            max-width: 630px;
-            font-size: clamp(42px, 5vw, 76px);
+            max-width: 700px;
+            font-size: clamp(52px, 4.8vw, 82px);
             font-weight: 900;
             letter-spacing: 0;
             line-height: 1.08;
         }
 
         .hero-copy {
-            max-width: 540px;
+            max-width: 620px;
             margin-top: 24px;
             color: rgba(255, 255, 255, .76);
-            font-size: 18px;
+            font-size: 19px;
             line-height: 1.75;
         }
 
@@ -338,7 +338,7 @@
 
         .hero-visual {
             position: relative;
-            min-height: 470px;
+            min-height: 520px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, .22);
             border-radius: 14px;
@@ -348,7 +348,7 @@
 
         .hero-video-slider {
             position: relative;
-            min-height: 470px;
+            min-height: 520px;
         }
 
         .hero-visual.has-slider {
@@ -407,7 +407,7 @@
         .video-slide-content {
             position: relative;
             z-index: 2;
-            max-width: 360px;
+            max-width: 430px;
         }
 
         .video-badge {
@@ -433,7 +433,7 @@
         }
 
         .video-slide h2 {
-            font-size: clamp(28px, 3vw, 42px);
+            font-size: clamp(32px, 3vw, 48px);
             font-weight: 900;
             line-height: 1.14;
         }
@@ -441,7 +441,7 @@
         .video-slide p {
             margin-top: 14px;
             color: rgba(255, 255, 255, .82);
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
         }
 
@@ -588,7 +588,7 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 1px;
-            margin-top: 14px;
+            margin-top: 18px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, .14);
             border-radius: 8px;
@@ -600,7 +600,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 22px 24px;
+            padding: 24px 28px;
             background: rgba(4, 14, 27, .7);
         }
 
@@ -645,12 +645,12 @@
         .topics {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 18px;
+            gap: 20px;
         }
 
         .topic-card {
-            min-height: 226px;
-            padding: 28px 22px;
+            min-height: 238px;
+            padding: 30px 24px;
             border: 1px solid #e4e9f1;
             border-radius: 8px;
             background: #fff;
@@ -694,7 +694,7 @@
         .content-grid {
             display: grid;
             grid-template-columns: .96fr 1fr;
-            gap: 58px;
+            gap: 68px;
             padding-top: 8px;
         }
 
@@ -1108,6 +1108,10 @@
         }
 
         @media (max-width: 1050px) {
+            .shell {
+                width: min(100% - 48px, 1180px);
+            }
+
             .nav-links {
                 display: none;
             }
@@ -1122,6 +1126,21 @@
             .community,
             .newsletter {
                 grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: auto;
+                gap: 42px;
+                padding: 54px 0 34px;
+            }
+
+            .hero h1 {
+                font-size: clamp(44px, 7vw, 68px);
+            }
+
+            .hero-visual,
+            .hero-video-slider {
+                min-height: 470px;
             }
 
             .topics {
@@ -1144,30 +1163,49 @@
 
             .nav {
                 min-height: 66px;
+                gap: 10px;
+            }
+
+            .brand {
+                min-width: 0;
+                gap: 10px;
             }
 
             .brand strong {
                 font-size: 19px;
+                white-space: nowrap;
             }
 
             .brand small,
             .icon-btn,
             .theme-toggle,
+            .nav-actions .btn-primary,
             .nav-actions .btn-dark {
                 display: none;
             }
 
             .hero {
                 min-height: auto;
-                padding-top: 42px;
+                gap: 28px;
+                padding: 42px 0 28px;
+            }
+
+            .hero h1 {
+                font-size: clamp(38px, 12vw, 48px);
             }
 
             .hero-copy {
                 font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .quick-points {
+                gap: 14px;
             }
 
             .hero-visual {
                 min-height: 360px;
+                border-radius: 10px;
             }
 
             .hero-video-slider,
@@ -1193,6 +1231,7 @@
             .topics,
             .features-row,
             .stats,
+            .content-grid,
             .footer-grid {
                 grid-template-columns: 1fr;
             }
@@ -1213,7 +1252,20 @@
             }
 
             .article {
-                grid-template-columns: 92px 1fr;
+                grid-template-columns: 1fr;
+            }
+
+            .article-img {
+                min-height: 170px;
+            }
+
+            .stat {
+                padding: 20px;
+            }
+
+            .topic-card {
+                min-height: auto;
+                padding: 24px 20px;
             }
         }
 
